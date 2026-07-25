@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宝石消消乐 · Gem Crush</title>
+<style>
+:root{
+  --bg1:#0e1230; --bg2:#1a1f4d; --panel:rgba(255,255,255,.06);
+  --gold:#ffcf5c; --ice:#8fd3ff; --line:rgba(255,255,255,.12);
+  --txt:#eef2ff;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  font-family:"PingFang SC","Noto Sans CJK SC","Segoe UI",sans-serif;
+  background:radial-gradient(1200px 800px at 20% -10%,#252c68 0%,transparent 60%),
+             linear-gradient(160deg,var(--bg1),var(--bg2));
+  color:var(--txt);min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:20px;overflow-x:hidden;
+}
+.wrap{width:100%;max-width:560px;}
+.title{text-align:center;margin-bottom:14px;}
+.title h1{
+  font-size:34px;font-weight:800;letter-spacing:2px;
+  background:linear-gradient(90deg,#ffcf5c,#ff8fd6,#8fd3ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.title p{color:#9aa6d6;font-size:13px;letter-spacing:3px;margin-top:2px;}
+.hud{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;
+}
+.stat{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:10px;text-align:center;backdrop-filter:blur(6px);
+}
+.stat .k{font-size:11px;color:#9aa6d6;letter-spacing:2px;}
+.stat .v{font-size:22px;font-weight:800;margin-top:2px;color:var(--gold);}
+.stat.goal .v{color:var(--ice);}
+.barwrap{height:8px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;margin-top:8px;}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#8fd3ff,#ffcf5c);transition:width .4s;}
+.boardwrap{position:relative;}
+#board{
+  display:grid;gap:6px;background:var(--panel);border:1px solid var(--line);
+  border-radius:18px;padding:10px;backdrop-filter:blur(6px);
+  box-shadow:0 20px 60px rgba(0,0,0,.45);touch-action:none;
+}
+.cell{
+  position:relative;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:26px;cursor:pointer;user-select:none;
+  background:rgba(255,255,255,.04);transition:transform .15s, box-shadow .15s;
+  aspect-ratio:1/1;
+}
+.cell .gem{
+  width:82%;height:82%;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:24px;transition:transform .18s cubic-bezier(.2,1.4,.5,1), opacity .18s;
+  box-shadow:inset 0 -4px 8px rgba(0,0,0,.25), inset 0 3px 6px rgba(255,255,255,.35);
+}
+.cell.sel{transform:scale(1.06);box-shadow:0 0 0 3px var(--gold), 0 0 22px rgba(255,207,92,.6);}
+.cell.hint .gem{animation:pulse .8s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(.82)}}
+.gem.pop{transform:scale(0);opacity:0;}
+.gem.drop{animation:drop .28s ease-out;}
+@keyframes drop{from{transform:translateY(-40px);opacity:.3}to{transform:translateY(0);opacity:1}}
+.combo{
+  position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) scale(.6);
+  font-size:40px;font-weight:900;pointer-events:none;opacity:0;
+  color:#fff;text-shadow:0 0 20px var(--gold),0 2px 8px rgba(0,0,0,.5);z-index:20;
+}
+.combo.show{animation:combo .9s ease-out;}
+@keyframes combo{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+  25%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}
+  100%{opacity:0;transform:translate(-50%,-90%) scale(1)}}
+.controls{display:flex;gap:10px;margin-top:16px;justify-content:center;}
+.btn{
+  background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.06));
+  border:1px solid var(--line);color:var(--txt);padding:10px 18px;border-radius:12px;
+  font-size:14px;cursor:pointer;font-weight:600;transition:transform .1s,box-shadow .2s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.3);}
+.btn.primary{background:linear-gradient(180deg,#ffcf5c,#f0a93c);color:#3a2600;border:none;}
+.overlay{
+  position:absolute;inset:0;background:rgba(8,10,30,.86);border-radius:18px;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  z-index:30;backdrop-filter:blur(4px);text-align:center;padding:20px;
+}
+.overlay.show{display:flex;}
+.overlay h2{font-size:32px;margin-bottom:8px;}
+.overlay p{color:#b9c2ee;margin-bottom:20px;}
+.footer{text-align:center;margin-top:16px;color:#6b76a8;font-size:11px;letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title">
+    <h1>💎 宝石消消乐</h1>
+    <p>GEM CRUSH · 交换相邻宝石，三连即消</p>
+  </div>
+  <div class="hud">
+    <div class="stat"><div class="k">分数 SCORE</div><div class="v" id="score">0</div></div>
+    <div class="stat"><div class="k">步数 MOVES</div><div class="v" id="moves">20</div></div>
+    <div class="stat goal"><div class="k">目标 GOAL</div><div class="v" id="goalLeft">1000</div>
+      <div class="barwrap"><div class="bar" id="bar"></div></div>
+    </div>
+  </div>
+  <div class="boardwrap">
+    <div id="board"></div>
+    <div class="combo" id="combo"></div>
+    <div class="overlay" id="overlay">
+      <h2 id="ovTitle">🎉 过关！</h2>
+      <p id="ovMsg"></p>
+      <button class="btn primary" onclick="game.restart()">再来一局</button>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="btn" onclick="game.hint()">💡 提示</button>
+    <button class="btn" onclick="game.shuffle()">🔀 洗牌</button>
+    <button class="btn primary" onclick="game.restart()">↻ 重开</button>
+  </div>
+  <div class="footer">方向：点选两个相邻宝石交换 · 支持连锁消除与连击加成</div>
+</div>
+
+<script>
+const SIZE=8, TYPES=6, GOAL=1000, MOVES=20;
+const GEMS=[
+  {c:'#ff5d6c',e:'🔴'},{c:'#ffcf5c',e:'🟡'},{c:'#57d9a3',e:'🟢'},
+  {c:'#5c9dff',e:'🔵'},{c:'#c78bff',e:'🟣'},{c:'#ff9f5c',e:'🟠'}
+];
+
+class Game{
+  constructor(){
+    this.boardEl=document.getElementById('board');
+    this.boardEl.style.gridTemplateColumns=`repeat(${SIZE},1fr)`;
+    this.restart();
+  }
+  restart(){
+    this.grid=[]; this.score=0; this.moves=MOVES; this.goal=GOAL;
+    this.sel=null; this.busy=false;
+    document.getElementById('overlay').classList.remove('show');
+    do{ this.fill(); }while(this.findMatches().size>0 || !this.hasMove());
+    this.render(); this.updateHUD();
+  }
+  fill(){
+    this.grid=[];
+    for(let r=0;r<SIZE;r++){const row=[];for(let c=0;c<SIZE;c++)row.push(this.rand());this.grid.push(row);}
+  }
+  rand(){return Math.floor(Math.random()*TYPES);}
+  idx(r,c){return r*SIZE+c;}
+  render(){
+    this.boardEl.innerHTML='';
+    for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){
+      const cell=document.createElement('div');cell.className='cell';
+      cell.dataset.r=r;cell.dataset.c=c;
+      const g=document.createElement('div');g.className='gem';
+      const t=this.grid[r][c];
+      g.style.background=t===null?'transparent':GEMS[t].c;
+      g.textContent=t===null?'':'';
+      cell.appendChild(g);
+      cell.onclick=()=>this.click(r,c);
+      this.boardEl.appendChild(cell);
+    }
+  }
+  cellAt(r,c){return this.boardEl.children[this.idx(r,c)];}
+  updateHUD(){
+    document.getElementById('score').textContent=this.score;
+    document.getElementById('moves').textContent=this.moves;
+    const left=Math.max(0,this.goal-this.score);
+    document.getElementById('goalLeft').textContent=left;
+    document.getElementById('bar').style.width=Math.min(100,this.score/this.goal*100)+'%';
+  }
+  click(r,c){
+    if(this.busy)return;
+    if(!this.sel){this.sel=[r,c];this.cellAt(r,c).classList.add('sel');return;}
+    const [sr,sc]=this.sel;
+    this.cellAt(sr,sc).classList.remove('sel');
+    if(sr===r&&sc===c){this.sel=null;return;}
+    if(Math.abs(sr-r)+Math.abs(sc-c)===1){ this.sel=null; this.trySwap(sr,sc,r,c); }
+    else { this.sel=[r,c]; this.cellAt(r,c).classList.add('sel'); }
+  }
+  swap(a,b,c,d){const t=this.grid[a][b];this.grid[a][b]=this.grid[c][d];this.grid[c][d]=t;}
+  async trySwap(a,b,c,d){
+    this.busy=true;
+    this.swap(a,b,c,d); this.render();
+    if(this.findMatches().size===0){
+      await this.sleep(180); this.swap(a,b,c,d); this.render(); this.busy=false; return;
+    }
+    this.moves--; this.updateHUD();
+    await this.resolve();
+    this.busy=false;
+    this.checkEnd();
+  }
+  findMatches(){
+    const m=new Set();
+    for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE-2;c++){
+      const v=this.grid[r][c];if(v===null)continue;
+      if(v===this.grid[r][c+1]&&v===this.grid[r][c+2]){m.add(this.idx(r,c));m.add(this.idx(r,c+1));m.add(this.idx(r,c+2));
+        let k=c+3;while(k<SIZE&&this.grid[r][k]===v){m.add(this.idx(r,k));k++;}}
+    }
+    for(let c=0;c<SIZE;c++)for(let r=0;r<SIZE-2;r++){
+      const v=this.grid[r][c];if(v===null)continue;
+      if(v===this.grid[r+1][c]&&v===this.grid[r+2][c]){m.add(this.idx(r,c));m.add(this.idx(r+1,c));m.add(this.idx(r+2,c));
+        let k=r+3;while(k<SIZE&&this.grid[k][c]===v){m.add(this.idx(k,c));k++;}}
+    }
+    return m;
+  }
+  async resolve(){
+    let chain=0;
+    while(true){
+      const m=this.findMatches();
+      if(m.size===0)break;
+      chain++;
+      const gain=m.size*10*chain;
+      this.score+=gain;
+      if(chain>=2)this.showCombo(chain);
+      this.beep(400+chain*120);
+      m.forEach(i=>{const g=this.cellAt(Math.floor(i/SIZE),i%SIZE).firstChild;g.classList.add('pop');});
+      await this.sleep(200);
+      m.forEach(i=>{this.grid[Math.floor(i/SIZE)][i%SIZE]=null;});
+      this.collapse();
+      this.render();
+      this.markDrops();
+      this.updateHUD();
+      await this.sleep(240);
+    }
+  }
+  collapse(){
+    for(let c=0;c<SIZE;c++){
+      let stack=[];
+      for(let r=SIZE-1;r>=0;r--)if(this.grid[r][c]!==null)stack.push(this.grid[r][c]);
+      for(let r=SIZE-1;r>=0;r--)this.grid[r][c]=stack.length? stack.shift(): this.rand();
+    }
+  }
+  markDrops(){for(const cell of this.boardEl.children)cell.firstChild.classList.add('drop');}
+  showCombo(n){
+    const el=document.getElementById('combo');
+    el.textContent=`连击 x${n}!`;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');
+  }
+  hasMove(){
+    for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){
+      if(c<SIZE-1){this.swap(r,c,r,c+1);const ok=this.findMatches().size>0;this.swap(r,c,r,c+1);if(ok)return[r,c,r,c+1];}
+      if(r<SIZE-1){this.swap(r,c,r+1,c);const ok=this.findMatches().size>0;this.swap(r,c,r+1,c);if(ok)return[r,c,r+1,c];}
+    }
+    return null;
+  }
+  hint(){
+    if(this.busy)return;
+    const mv=this.hasMove();
+    if(!mv)return this.shuffle();
+    [[mv[0],mv[1]],[mv[2],mv[3]]].forEach(([r,c])=>{
+      const cell=this.cellAt(r,c);cell.classList.add('hint');setTimeout(()=>cell.classList.remove('hint'),1600);
+    });
+  }
+  async shuffle(){
+    if(this.busy)return;this.busy=true;
+    do{ const flat=this.grid.flat();for(let i=flat.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[flat[i],flat[j]]=[flat[j],flat[i]];}
+      for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++)this.grid[r][c]=flat[r*SIZE+c];
+    }while(this.findMatches().size>0||!this.hasMove());
+    this.render();this.markDrops();this.busy=false;
+  }
+  checkEnd(){
+    if(this.score>=this.goal)return this.end(true);
+    if(this.moves<=0)return this.end(false);
+    if(!this.hasMove())this.shuffle();
+  }
+  end(win){
+    document.getElementById('ovTitle').textContent=win?'🎉 过关！':'😅 步数用尽';
+    document.getElementById('ovMsg').textContent=`最终得分 ${this.score} 分`+(win?' · 目标达成！':' · 再试一次');
+    document.getElementById('overlay').classList.add('show');
+  }
+  beep(freq){
+    try{const ac=this._ac||(this._ac=new (window.AudioContext||window.webkitAudioContext)());
+      const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);
+      o.frequency.value=freq;o.type='sine';g.gain.setValueAtTime(.06,ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.18);o.start();o.stop(ac.currentTime+.18);
+    }catch(e){}
+  }
+  sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+}
+const game=new Game();
+</script>
+</body>
+</html>
