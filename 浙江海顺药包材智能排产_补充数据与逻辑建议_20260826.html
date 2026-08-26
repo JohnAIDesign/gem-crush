@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="浙江海顺药包材智能排产补充数据、规则结构化与实施路径建议（附第六章待业务确认清单 Excel）">
+  <title>浙江海顺药包材智能排产｜补充数据与逻辑建议</title>
+  <style>
+    :root{--ink:#0c2438;--teal:#066775;--teal2:#0b8993;--paper:#f7f7f4;--white:#fff;--line:#cbd5d3;--muted:#52636c;--amber:#d17a16;--wash:#e9f1ef;--soft:#f4efe5;--red:#9f3e32;--serif:"Songti SC","STSong","Noto Serif CJK SC",serif;--sans:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.75 var(--sans)}.page{max-width:1480px;margin:0 auto;padding:0 42px 76px}.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:26px;padding:20px 0 22px;border-bottom:2px solid var(--ink)}.mast img{display:block;width:185px;height:auto;mix-blend-mode:multiply}.meta{text-align:right;font-size:12px;color:var(--muted)}.meta b{display:block;font-size:14px;color:var(--ink)}.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:38px}.toc{position:sticky;top:18px;align-self:start;max-height:calc(100vh - 36px);overflow:auto;margin-top:10px;border-right:1px solid var(--line);padding:24px 20px 12px 0}.toc h2{font:700 14px var(--sans);letter-spacing:.12em;margin:0 0 10px}.toc a{display:block;color:var(--muted);text-decoration:none;font-size:12px;line-height:1.45;padding:7px 0}.toc a:hover,.toc a.active{color:var(--teal);font-weight:700}.toc b{display:inline-block;width:29px;color:var(--teal);font-family:Georgia,serif}main{min-width:0;padding-top:34px}.hero{padding:0 0 34px;border-bottom:1px solid var(--line)}h1{font:clamp(38px,4.8vw,64px)/1.12 var(--serif);letter-spacing:.025em;margin:0;max-width:1080px}.subtitle{font:21px var(--serif);color:#345566;margin:13px 0 0}.desc{font-size:13px;color:var(--muted);margin:19px 0 0}.desc span+span:before{content:"｜";margin:0 8px;color:#9aa5a5}.thesis{font:clamp(20px,2.4vw,29px)/1.48 var(--serif);max-width:980px;margin:28px 0 0;padding-left:18px;border-left:5px solid var(--amber)}.overview{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#d8c7aa;border-block:1px solid #d8c7aa;margin-top:28px}.overview article{background:var(--soft);padding:19px;min-height:168px}.overview b{font:28px Georgia,serif;color:var(--amber)}.overview h3{font:17px var(--serif);color:var(--ink);margin:5px 0 6px}.overview p{font-size:12px;line-height:1.65;margin:0;color:#405058}.flow{display:flex;align-items:stretch;gap:0;margin:22px 0 0;overflow-x:auto}.flow div{min-width:150px;flex:1;border:1px solid var(--line);background:#fbfcfa;padding:13px}.flow b{display:block;color:var(--teal);font-size:12px}.flow span{font:15px var(--serif)}.flow i{display:flex;align-items:center;justify-content:center;min-width:28px;color:var(--teal);font-style:normal;font-size:23px}section{padding:42px 0 9px;border-bottom:1px solid var(--line);scroll-margin-top:14px}section>h2{font:26px/1.35 var(--serif);margin:0 0 20px}h2 .no{font:700 17px Georgia,serif;color:var(--teal);margin-right:12px}h3{font-size:17px;color:var(--teal);margin:25px 0 9px}p{margin:8px 0 14px}ul,ol{padding-left:22px}li+li{margin-top:5px}strong{color:#173e52}code{font:13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#e8efed;color:#164d58;border-radius:3px;padding:2px 5px}.callout{padding:15px 18px;margin:18px 0;background:#fff9ed;border:0;border-left:4px solid var(--amber);font-size:14px;color:var(--ink)}.table-wrap{overflow-x:auto;margin:15px 0 22px}table{border-collapse:collapse;width:100%;min-width:820px;font-size:13px;line-height:1.6}th{background:var(--teal);color:#fff;text-align:left;font-weight:600;padding:10px 11px}td{padding:10px 11px;vertical-align:top;border:1px solid var(--line);background:rgba(255,255,255,.35)}tr:nth-child(even) td{background:#edf3f1}hr{border:0;border-top:1px solid var(--line);margin:32px 0}section:nth-of-type(1) ol{counter-reset:item;list-style:none;padding-left:0;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}section:nth-of-type(1) ol li{position:relative;background:var(--white);padding:17px 17px 17px 52px;margin:0;min-height:95px}section:nth-of-type(1) ol li:before{counter-increment:item;content:counter(item,decimal-leading-zero);position:absolute;left:16px;top:14px;font:700 20px Georgia,serif;color:var(--amber)}footer{padding-top:28px;font-size:12px;color:var(--muted)}.copyright{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}.copyright strong{display:block;color:var(--ink);font-size:13px}
+    @media(max-width:1050px){.page{padding:0 22px 52px}.layout{display:block}.toc{display:none}.overview{grid-template-columns:1fr 1fr}.mast img{width:150px}}
+    @media(max-width:680px){body{font-size:14px}.page{padding-inline:16px}.mast{align-items:center}.meta{display:none}.overview{grid-template-columns:1fr}.flow{display:grid;grid-template-columns:1fr}.flow i{min-height:24px}.flow i:after{content:"↓"}.flow i{font-size:0}section:nth-of-type(1) ol{grid-template-columns:1fr}h1{font-size:36px}.subtitle{font-size:18px}}
+    @media print{body{background:#fff}.page{max-width:none;padding:0 18px}.layout{display:block}.toc{display:none}.overview{grid-template-columns:repeat(4,1fr)}section{break-inside:auto}table{min-width:0;font-size:10px}.table-wrap{overflow:visible}a{color:inherit;text-decoration:none}}
+  </style>
+</head>
+<body><div class="page">
+  <header class="mast"><img src="AI修理工_logo_白底.png" alt="AI修理工：咨询、实施、优化"><div class="meta">智能排产诊断与实施建议<b>2026 年 8 月 26 日</b></div></header>
+  <div class="layout">
+    <nav class="toc" aria-label="目录"><h2>目录</h2><a href="#section-1"><b>01</b>结论先行</a><a href="#section-2"><b>02</b>现有工作簿已经明确的内容</a><a href="#section-3"><b>03</b>智能排产前必须补充的七类数据</a><a href="#section-4"><b>04</b>需要建立的十二张核心主数据表</a><a href="#section-5"><b>05</b>把现场经验改造成“可执行规则”</a><a href="#section-6"><b>06</b>现有规则仍需业务确认的关键问题</a><a href="#section-7"><b>07</b>数据标准化应立即处理的四个问题</a><a href="#section-8"><b>08</b>建议的智能排产技术组合</a><a href="#section-9"><b>09</b>建议实施路线：先 PTP、后 SP，先辅助、后自动</a><a href="#section-10"><b>10</b>项目成效应如何衡量</a><a href="#section-11"><b>11</b>下一次排产专题会需要准备的资料</a><a href="#section-12"><b>12</b>给管理层的一句话建议</a></nav>
+    <main>
+      <div class="hero">
+        <h1>浙江海顺药包材智能排产<br>补充数据与逻辑建议</h1>
+        <p class="subtitle">把老师傅的经验，转化为系统能计算、能校验、能解释的规则</p>
+        <p class="desc"><span>分析对象：《排产逻辑步骤及注意点.xlsx》</span><span>适用：PTP / SP</span><span>定位：业务访谈与 MVP 设计</span></p>
+        <p class="thesis">最快见效的路径，不是一步到位自动排全厂，而是先把 PTP 的数据做准、硬约束做全、冲突解释做清。</p>
+        <div class="overview">
+          <article><b>01</b><h3>先统一数据</h3><p>统一产品、材质、厚宽、胶型、颜色、设备和单位，解决同物不同名与文本无法计算。</p></article>
+          <article><b>02</b><h3>再固化约束</h3><p>把“不能、必须”变成硬约束，把“尽量、相近、优先”变成可评分软规则。</p></article>
+          <article><b>03</b><h3>接入实时状态</h3><p>订单、齐套、质量放行、在制品、设备、人员与工装状态决定计划能否执行。</p></article>
+          <article><b>04</b><h3>先辅助后自动</h3><p>AI 先给建议、缺料和冲突清单；计划员确认后写回 ERP，再逐步扩展至 SP。</p></article>
+        </div>
+        <div class="flow"><div><b>STEP 1</b><span>标准化主数据</span></div><i>→</i><div><b>STEP 2</b><span>硬约束过滤</span></div><i>→</i><div><b>STEP 3</b><span>交期与换型优化</span></div><i>→</i><div><b>STEP 4</b><span>人工确认</span></div><i>→</i><div><b>STEP 5</b><span>受控写回 ERP</span></div></div>
+        <blockquote class="callout"><strong>分析边界：</strong>源工作簿仅 Sheet1 有实质内容，包含 4 项排产步骤、2 类主要工艺路线、6 组注意点和 8 项痛点；未包含真实订单、设备台账、物料库存、在制品与产能明细。本文权重、阈值及时窗均为待确认的设计建议。</blockquote>
+      </div>
+      <section id="section-1"><h2><span class="no">01</span>一、结论先行</h2>
+<p>现有表已经沉淀了宝贵的现场经验，但目前仍是“供人阅读的经验规则”，距离“计算机能够自动组合、验证和解释的排产规则”还差四层基础：</p>
+<ol>
+<li><strong>统一数据：</strong> 产品规格、材质规格、设备名称、胶水、颜色、宽度和厚度必须使用统一编码与单位，解决同物不同名、中文/英文括号混用、厚宽顺序不一致等问题。</li>
+<li><strong>可计算主数据：</strong> 补齐“产品—工艺路线—工序—设备—速度—换型—良率—等待时间”的关系表，特别是机速矩阵、设备能力矩阵和顺序相关换型时间。</li>
+<li><strong>明确规则层级：</strong> 把“不能做、必须做”定义为硬约束，把“尽量、优先、相近、重要”等定义为可评分的软约束，并明确冲突时谁优先。</li>
+<li><strong>接入实时状态：</strong> 智能排产必须知道订单、物料齐套、质量放行、在制品、设备停机、人员班次和当前工单状态；只靠静态工艺规则只能形成粗排，不能形成可执行计划。</li>
+</ol>
+<p><strong>建议最快路径：</strong> 先选 PTP 作为第一条试点线，先做“辅助排产”而不是全自动排产。系统每天自动读取订单和实时状态，生成一份可解释的建议排单、缺料清单和冲突清单，由计划员确认后再写回 ERP。待 PTP 的规则准确率和数据质量稳定，再扩展到工序更多、等待约束更复杂的 SP。</p>
+<hr>
+</section><section id="section-2"><h2><span class="no">02</span>二、现有工作簿已经明确的内容</h2>
+<h3>2.1 当前排产主流程</h3>
+<ol>
+<li>每日汇总客服下达的订单，整理到订单统计表。</li>
+<li>按相同物料、相同规格、相近颜色、相同胶水型号与上胶量进行合单，并尽量按从宽到窄排序。</li>
+<li>优先考虑急单、重要客户和交期；样品、小单通常后排。</li>
+<li>根据机速、色数和换型时间估算日产量并匹配机台，但现有机速数据不全，结果只能粗估。</li>
+</ol>
+<h3>2.2 当前工艺路线</h3>
+<ul>
+<li><strong>PTP 路线 A：</strong> 印刷 → 涂布 → 涂布后检品 → 分切。</li>
+<li><strong>PTP 路线 B：</strong> 涂布 → 印刷 → 印刷后处理 → 印后检品 → 分切。</li>
+<li><strong>PTP 特殊路线：</strong> 特殊情况下，涂布后直接复合。</li>
+<li><strong>SP 主路线：</strong> 印刷 → 印刷后处理 → 印刷后检品 → 复合 1 → 复合 2 → 复后检品 → 分切。</li>
+<li><strong>SP 特殊路线：</strong> 特殊情况下，复合后涂布，涂布完成后再次复合。</li>
+</ul>
+<h3>2.3 已沉淀的典型现场约束</h3>
+<ul>
+<li>PTP 2 色机对小文字、2 色订单及部分涂布后印刷订单存在能力或速度限制。</li>
+<li>涂布 1 号机不能做 6g 及以上上胶量，不能做 1024 底涂；168/172 底涂后必须在 24 小时内印刷。</li>
+<li>SP 上光油后必须增加 24 小时固化；压易撕需在 SP 6 色机处理。</li>
+<li>SP 金色、满版、色数多的订单需等待 PE 齐套后再印刷，以降低反粘风险。</li>
+<li>单复 2 号机、三合一、北人机及老车间三合一对宽度、特殊 PE、厚材料、奶酪棒订单和 PA 上胶分别存在适配限制。</li>
+<li>PTP 5# 台湾友典、6# 黄山三夏分切机对塑料管订单、铝厚、宽度和圆刀订单存在限制或合并偏好。</li>
+</ul>
+<p>这些内容非常有价值，建议全部转化为结构化“规则卡”，而不是继续放在自由文本里。</p>
+<hr>
+</section><section id="section-3"><h2><span class="no">03</span>三、智能排产前必须补充的七类数据</h2>
+<h3>3.1 订单与需求数据</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>必备字段</th>
+<th>说明</th>
+<th>关键原因</th>
+<th>建议责任部门</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>订单号、行号、工单号</td>
+<td>唯一标识，不允许一单多义</td>
+<td>便于追踪与防止重复排产</td>
+<td>客服/计划/IT</td>
+</tr>
+<tr>
+<td>客户、客户等级</td>
+<td>A/B/C 或战略客户清单</td>
+<td>将“重要客户”变成可计算规则</td>
+<td>销售/管理层</td>
+</tr>
+<tr>
+<td>客户要求交期、承诺交期</td>
+<td>两个日期分开保存</td>
+<td>避免方向性交期被当作承诺交期</td>
+<td>销售/客服</td>
+</tr>
+<tr>
+<td>交期置信度、锁定状态</td>
+<td>预测、暂定、锁定、已确认</td>
+<td>区分框架订单与可执行需求</td>
+<td>销售/客服</td>
+</tr>
+<tr>
+<td>急单标识、急单审批人</td>
+<td>记录原因、批准时间、影响范围</td>
+<td>防止所有订单都变成急单</td>
+<td>业务负责人</td>
+</tr>
+<tr>
+<td>产品编码、标准品名</td>
+<td>与产品主数据一一对应</td>
+<td>消除同物不同名</td>
+<td>技术/IT</td>
+</tr>
+<tr>
+<td>标准材质、厚度、宽度、长度</td>
+<td>数值字段与单位分开</td>
+<td>支持设备适配和合单</td>
+<td>技术/计划</td>
+</tr>
+<tr>
+<td>颜色、色数、版面类型</td>
+<td>金色、满版、小文字等特征</td>
+<td>影响设备、速度与换型</td>
+<td>技术/计划</td>
+</tr>
+<tr>
+<td>胶水型号、上胶量、底涂代码</td>
+<td>使用标准编码和单位</td>
+<td>影响合单、机台与时窗</td>
+<td>技术/质量</td>
+</tr>
+<tr>
+<td>数量、单位、最小批量</td>
+<td>米、卷、kg 等必须统一换算</td>
+<td>支持工时与产能计算</td>
+<td>客服/计划</td>
+</tr>
+<tr>
+<td>特殊工艺/包装要求</td>
+<td>圆刀、易撕、上光油、标签等</td>
+<td>防止计划可行但交付不合格</td>
+<td>客服/技术</td>
+</tr>
+<tr>
+<td>允许提前/拆批/合批</td>
+<td>是/否及批准人</td>
+<td>决定优化空间</td>
+<td>计划/销售</td>
+</tr>
+</tbody></table></div>
+<h3>3.2 产品、BOM 与工艺路线主数据</h3>
+<p>每个产品编码必须绑定一个有效版本：</p>
+<ul>
+<li>BOM 版本、工艺路线版本、生效日期与失效日期。</li>
+<li>标准工序顺序、可选路线、返工路线及路线选择条件。</li>
+<li>每道工序的输入/输出单位、标准损耗、成材率、最小经济批量。</li>
+<li>必须使用的设备组、可替代设备组、禁用设备及原因。</li>
+<li>标准工艺参数：色数、胶型、上胶量、底涂、温度/速度范围、固化或等待时间。</li>
+<li>版辊、刀具、圆刀、模具等专用工装需求与唯一编号。</li>
+<li>工序检验点、抽检时长、放行要求和不合格后的处置路线。</li>
+</ul>
+<h3>3.3 设备能力与标准产能数据</h3>
+<p>当前最紧迫的是建立“设备 × 产品特征”的速度和能力矩阵，而不是给每台设备只设一个平均速度。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>数据表</th>
+<th>至少需要的字段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>设备台账</td>
+<td>设备编码、名称、车间、设备组、状态、班次日历</td>
+</tr>
+<tr>
+<td>能力矩阵</td>
+<td>设备、产品族、材质、厚度范围、宽度范围、色数、胶型、版面特征、能否加工</td>
+</tr>
+<tr>
+<td>标准速度矩阵</td>
+<td>设备、产品族/关键特征、标准速度、速度单位、有效样本数、更新时间</td>
+</tr>
+<tr>
+<td>换型矩阵</td>
+<td>前一任务特征、后一任务特征、清洗/换版/换胶/换刀时间、是否需要首件确认</td>
+</tr>
+<tr>
+<td>维护日历</td>
+<td>计划保养、点检、校准、不可用时段、预计恢复时间</td>
+</tr>
+<tr>
+<td>工装台账</td>
+<td>工装编号、适用产品、所在位置、状态、占用工单、准备时长</td>
+</tr>
+</tbody></table></div>
+<p>建议用近 3—6 个月实际生产记录按“设备+产品族+关键工艺特征”计算中位速度和分位区间，再由工艺、生产共同确认标准值。不能只用理论最高速度。</p>
+<h3>3.4 物料、库存与齐套数据</h3>
+<ul>
+<li>原辅料编码、批号、库位、账面量、可用量、已占用量、在途量。</li>
+<li>质量状态：待检、合格、冻结、不合格、放行时间。</li>
+<li>订单物料齐套时间，而不仅是“当前是否有料”。</li>
+<li>预留/占用明细：哪一批物料被哪个订单占用，释放条件是什么。</li>
+<li>备库料可用规格、可分切组合、余料尺寸与批次追溯。</li>
+<li>替代料清单：原料、替代料、适用产品、批准部门、有效期、客户限制。</li>
+<li>采购预计到货时间及置信度；延迟时自动触发重排。</li>
+</ul>
+<p><strong>必须建立规则：</strong> 未完成替代料审批、未完成质量放行、批次被锁定的物料，智能排产不得视为“可用”。</p>
+<h3>3.5 在制品与生产执行数据</h3>
+<ul>
+<li>工单当前工序、已完成数量、良品数量、不良品数量、返工数量和剩余数量。</li>
+<li>实际开工/完工时间、停机时间、停机原因、预计恢复时间。</li>
+<li>上一道工序完成时间、下一道工序最早/最晚可开工时间。</li>
+<li>半成品批次、存放位置、等待时长、质量状态。</li>
+<li>工单关闭状态；已完成或取消的工单必须及时关闭，避免虚假占用。</li>
+</ul>
+<p>现有“日报把良品与不良品混报”的问题必须先解决，否则智能排产会高估可用产出并错误判断剩余负荷。</p>
+<h3>3.6 人员、班次与辅助资源</h3>
+<ul>
+<li>每台设备的班次、可用工时、加班安排和停线窗口。</li>
+<li>机长/操作工技能矩阵，哪些人员可独立操作哪些设备。</li>
+<li>检验、调色、配胶、版辊准备、工装准备等共享资源的可用日历。</li>
+<li>换型是否需要多人协同，人员不足时实际换型时间如何修正。</li>
+</ul>
+<h3>3.7 质量、合规与追溯数据</h3>
+<ul>
+<li>各工序首件确认、过程检验、完工检验和放行节点。</li>
+<li>清场、清洁、换料、换胶、换色要求及标准耗时。</li>
+<li>工序间最短等待、最长等待和超时处置，例如 24 小时固化或 24 小时内必须印刷。</li>
+<li>批次追溯、混批/合批限制、客户或产品专用要求。</li>
+<li>偏差、变更、返工和让步接收的审批状态。</li>
+</ul>
+<p>质量未放行、偏差未批准或追溯关系无法建立时，应作为硬约束阻止开工，而不是在排产后再人工补救。</p>
+<hr>
+</section><section id="section-4"><h2><span class="no">04</span>四、需要建立的十二张核心主数据表</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>主数据/规则表</th>
+<th>作用</th>
+<th>首批负责人建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>产品与规格标准表</td>
+<td>统一厚、宽、材质、颜色、胶型、底涂等字段</td>
+<td>技术 + IT</td>
+</tr>
+<tr>
+<td>2</td>
+<td>产品工艺路线版本表</td>
+<td>管理 PTP/SP 主路线、特殊路线和生效版本</td>
+<td>技术 + 质量</td>
+</tr>
+<tr>
+<td>3</td>
+<td>BOM 与替代料表</td>
+<td>管理用料、损耗、替代关系与审批状态</td>
+<td>技术 + 采购 + 质量</td>
+</tr>
+<tr>
+<td>4</td>
+<td>设备能力矩阵</td>
+<td>判断某订单能否在某设备加工</td>
+<td>工艺 + 生产</td>
+</tr>
+<tr>
+<td>5</td>
+<td>设备标准速度矩阵</td>
+<td>计算工时和完工时间</td>
+<td>生产 + 工艺</td>
+</tr>
+<tr>
+<td>6</td>
+<td>顺序相关换型矩阵</td>
+<td>计算换色、换胶、换版、换刀和清洗成本</td>
+<td>生产 + 工艺</td>
+</tr>
+<tr>
+<td>7</td>
+<td>工序等待/时窗表</td>
+<td>固化、限时转序、最大停留等</td>
+<td>技术 + 质量</td>
+</tr>
+<tr>
+<td>8</td>
+<td>设备与人员日历</td>
+<td>管理班次、维护、人员、停机和加班</td>
+<td>生产 + 设备</td>
+</tr>
+<tr>
+<td>9</td>
+<td>工装与刀具台账</td>
+<td>管理版辊、圆刀等专用资源冲突</td>
+<td>生产 + 仓储</td>
+</tr>
+<tr>
+<td>10</td>
+<td>客户与订单优先级表</td>
+<td>把急单、重点客户、样品和小单量化</td>
+<td>销售 + 管理层</td>
+</tr>
+<tr>
+<td>11</td>
+<td>库存占用与齐套表</td>
+<td>管理可用量、预留、备库料和预计齐套时间</td>
+<td>仓储 + 采购 + IT</td>
+</tr>
+<tr>
+<td>12</td>
+<td>排产规则卡与版本表</td>
+<td>记录规则条件、动作、级别、责任人和生效期</td>
+<td>计划 + FDE + IT</td>
+</tr>
+</tbody></table></div>
+<hr>
+</section><section id="section-5"><h2><span class="no">05</span>五、把现场经验改造成“可执行规则”</h2>
+<h3>5.1 先区分硬约束与软约束</h3>
+<p><strong>硬约束：不满足就不能排。</strong></p>
+<ul>
+<li>工艺路线和工序先后必须正确。</li>
+<li>设备必须满足材质、厚度、宽度、色数、胶型、底涂、版面、刀型等能力要求。</li>
+<li>物料必须齐套且处于可用/已放行状态；专用工装必须可用。</li>
+<li>设备、人员和共享资源在该时段必须有产能，任务不得重叠。</li>
+<li>168/172 底涂后 24 小时内印刷、上光油后至少固化 24 小时等时窗必须满足。</li>
+<li>必要检品、质量放行和清场未完成时，不得进入下一工序。</li>
+<li>替代料、特殊路线和偏差处置必须先获得授权。</li>
+</ul>
+<p><strong>软约束：可以权衡，但必须计算代价。</strong></p>
+<ul>
+<li>交期越紧、逾期风险越高，优先级越高。</li>
+<li>战略客户、已批准急单可提高优先级。</li>
+<li>相同物料/规格/胶型/上胶量优先合单；颜色相近、宽到窄用于减少换型与余料。</li>
+<li>减少换色、换胶、换版、换刀、清洗和空转。</li>
+<li>尽量平衡瓶颈设备负荷，减少半成品等待和过多在制品。</li>
+<li>样品和小单可后排，但必须设置“最长等待天数”，避免长期饿死。</li>
+</ul>
+<h3>5.2 推荐的排产决策顺序</h3>
+<ol>
+<li><strong>过滤不可行组合：</strong> 工艺、设备、物料、质量、人员、工装、时窗任一不满足即剔除。</li>
+<li><strong>识别瓶颈工序：</strong> 先围绕印刷、复合或特定分切设备等瓶颈建立有限产能计划。</li>
+<li><strong>计算交期风险：</strong> <code>剩余缓冲 = 承诺交期 - 当前时间 - 剩余标准生产时长 - 检验/放行/物流时间</code>。</li>
+<li><strong>生成候选批次：</strong> 在工艺兼容前提下按材料、规格、胶型、上胶量、颜色族、宽度和刀型聚类。</li>
+<li><strong>比较换型与延期代价：</strong> 不仅追求合单，也要防止为了少换型而造成重点订单逾期。</li>
+<li><strong>向前/向后联排：</strong> 从瓶颈工序向前检查物料和前工序，向后检查检品、固化、分切及交付。</li>
+<li><strong>输出可解释结果：</strong> 每个订单显示“为何排此机、为何此时生产、影响了哪些订单、有哪些风险”。</li>
+</ol>
+<h3>5.3 优先级评分建议（待海顺校准）</h3>
+<p>硬约束先行后，可给可行订单计算初始优先级：</p>
+<p><code>建议优先分 = 交期风险 40% + 客户等级 20% + 已批准急单 15% + 物料齐套 10% + 工序衔接 8% + 经济批量/换型收益 7%</code></p>
+<p>这只是首轮试算权重。建议用最近 2—3 个月历史订单回放，比较“准时交付、换型时长、计划变更次数、加班和在制品等待”，再由计划、销售、生产和管理层共同校准。</p>
+<h3>5.4 冻结区、锁定区与滚动区</h3>
+<ul>
+<li><strong>冻结区：</strong> 建议未来 24 小时内原则上不得自动改动，除非设备故障、质量冻结或批准急单。</li>
+<li><strong>锁定区：</strong> 建议未来 2—3 天只允许计划负责人确认后调整。</li>
+<li><strong>滚动优化区：</strong> 3 天以后可根据交期、齐套与负荷每日重算。</li>
+<li><strong>插单机制：</strong> 每个插单必须显示被挤占订单、预计延期、增加换型、加班和物料影响，由指定负责人批准。</li>
+</ul>
+<h3>5.5 自动重排触发条件</h3>
+<ul>
+<li>关键设备停机或预计恢复时间变化。</li>
+<li>关键物料延期、冻结、放行或替代料批准。</li>
+<li>客户交期正式变更或急单获得批准。</li>
+<li>实际速度/良率显著偏离标准，剩余时长变化。</li>
+<li>前工序延误导致 24 小时时窗面临风险。</li>
+<li>质量异常、返工、偏差或工单取消。</li>
+</ul>
+<hr>
+</section><section id="section-6"><h2><span class="no">06</span>六、现有规则仍需业务确认的关键问题</h2>
+<div class="callout">下表 17 项已同步抽取为独立的可填写访谈表 <code>浙江海顺排产规则_待业务确认清单_20260826.xlsx</code>（同目录）。建议由各责任部门逐行填写“业务确认结论 / 审批人 / 状态”，形成签字版规则卡后再进入规则引擎。</div>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>现有表述</th>
+<th>必须补充的可计算定义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“相近颜色”</td>
+<td>建立颜色族、颜色切换等级和对应清洗/换色时间；谁维护，何时更新？</td>
+</tr>
+<tr>
+<td>“从宽到窄”</td>
+<td>适用于哪些工序/设备？什么情况下为交期让路？换卷后是否重置？</td>
+</tr>
+<tr>
+<td>“重要客户”</td>
+<td>客户分级清单、有效期、批准人，以及与急单冲突时谁优先。</td>
+</tr>
+<tr>
+<td>“急单”</td>
+<td>认定条件、审批人、每日/每周上限及插单造成的延期由谁确认。</td>
+</tr>
+<tr>
+<td>“样品、小单往后”</td>
+<td>样品是否具有客户开发优先级？小单最长可等待几天？</td>
+</tr>
+<tr>
+<td>“文字太小”</td>
+<td>字号、线宽、套印精度或检验标准的数值阈值。</td>
+</tr>
+<tr>
+<td>“尽量不要排 2 色订单”</td>
+<td>是禁排、降速还是软惩罚？满足什么条件可排？</td>
+</tr>
+<tr>
+<td>“机速 80 左右”</td>
+<td>单位、适用设备/产品/色数、样本来源和允许波动范围。</td>
+</tr>
+<tr>
+<td>“6g 及以上”</td>
+<td>单位是 g/㎡ 还是其他；等于 6 是否禁做；上下限如何处理。</td>
+</tr>
+<tr>
+<td>“24 小时内印刷”</td>
+<td>从哪一时点开始计时，最晚开工还是必须完工，超时后的处置。</td>
+</tr>
+<tr>
+<td>“上光油固化 24 小时”</td>
+<td>下一工序最早开工时点、环境条件及质量放行要求。</td>
+</tr>
+<tr>
+<td>“PE 到齐以后印”</td>
+<td>齐套的判断字段、批次/质量状态和预计齐套时间如何获得。</td>
+</tr>
+<tr>
+<td>“厚的材料”</td>
+<td>厚度阈值、材质例外及北人机的完整适配范围。</td>
+</tr>
+<tr>
+<td>“宽度小于 700 不能做”</td>
+<td>单位和边界值；成品宽度还是母卷宽度。</td>
+</tr>
+<tr>
+<td>“铝 20 厚、宽度大于 1000”</td>
+<td>厚度单位、等于边界时是否允许、组合条件是“且”还是“或”。</td>
+</tr>
+<tr>
+<td>“圆刀订单放一起”</td>
+<td>圆刀编号、适配设备、换刀时间和同刀合单条件。</td>
+</tr>
+<tr>
+<td>“特殊情况”路线</td>
+<td>什么产品/客户/工艺触发，谁审批，是否需要额外检验。</td>
+</tr>
+</tbody></table></div>
+<p>这些问题不回答清楚，AI 只能复述经验，不能稳定地生成可执行计划。</p>
+<hr>
+</section><section id="section-7"><h2><span class="no">07</span>七、数据标准化应立即处理的四个问题</h2>
+<h3>7.1 产品规格字段拆分</h3>
+<p>不要再把“厚度、宽度、材质”混写在一个文本字段。建议至少拆为：</p>
+<p><code>产品编码｜产品族｜基材｜厚度值｜厚度单位｜宽度值｜宽度单位｜长度值｜颜色｜色数｜胶型｜上胶量｜底涂｜特殊工艺</code></p>
+<h3>7.2 编码和符号标准化</h3>
+<ul>
+<li>产品和材质只允许标准编码，名称作为显示字段。</li>
+<li>中文括号、英文括号、空格、斜杠等在录入端自动规范。</li>
+<li>厚度和宽度必须是数值字段，禁止依靠文本公式拆解。</li>
+<li>对旧数据建立“原始值—标准值—转换规则—人工确认人”的映射表，保留审计痕迹。</li>
+</ul>
+<h3>7.3 良品与不良品分开</h3>
+<p>日报至少拆分：投入数量、良品数量、不良品数量、返工数量、待判数量、报废数量、单位、批次和原因码。系统根据良品与可放行数量判断订单进度。</p>
+<h3>7.4 物料占用与备库料可视化</h3>
+<p>库存查询必须同时显示账面量、已占用量、可用量、质量状态、批次、余料尺寸和关联订单。备库料应能够按材质、厚度、宽度和可分切组合检索，不再逐单人工查询。</p>
+<hr>
+</section><section id="section-8"><h2><span class="no">08</span>八、建议的智能排产技术组合</h2>
+<h3>8.1 五层架构</h3>
+<ol>
+<li><strong>ERP/MES/WMS/设备数据层：</strong> 订单、BOM、库存、工单、报工、质量和设备状态的事实来源。</li>
+<li><strong>中间件与数据标准层：</strong> 统一编码、字段、单位和接口，提供只读快照与受控写回。</li>
+<li><strong>规则引擎：</strong> 执行设备禁限、工艺路线、质量放行、时窗、替代料和冻结区规则。</li>
+<li><strong>优化求解器：</strong> 在可行解中平衡交期、换型、负荷、在制品和加班。</li>
+<li><strong>AI/FDE 交互层：</strong> 用自然语言收集场景、解释冲突、生成异常摘要和帮助计划员比较方案。</li>
+</ol>
+<p><strong>边界说明：</strong> 大模型适合解释、检索、辅助补全与方案比较；设备冲突、时窗、容量和排序应由结构化规则与优化算法计算，不能让大模型凭文字“猜排程”。</p>
+<h3>8.2 推荐的输出，而不仅是一张排单表</h3>
+<ul>
+<li>主排程：订单—工序—设备—计划开始/结束—数量—班次。</li>
+<li>缺料/未放行清单：缺什么、预计何时齐套、影响哪些订单。</li>
+<li>冲突清单：设备、工装、人员、时窗、路线或质量冲突。</li>
+<li>交期风险清单：预计延期、延期原因、可选补救方案。</li>
+<li>插单影响模拟：被推迟订单、增加换型、加班与风险。</li>
+<li>规则解释：每个计划结果命中了哪些硬约束和软规则。</li>
+<li>版本与审计：谁在何时接受、调整或否决了 AI 建议。</li>
+</ul>
+<hr>
+</section><section id="section-9"><h2><span class="no">09</span>九、建议实施路线：先 PTP、后 SP，先辅助、后自动</h2>
+<h3>阶段 0｜3—5 个工作日：规则澄清与数据体检</h3>
+<ul>
+<li>用本报告第六章逐条确认阈值、单位、边界和审批人。</li>
+<li>抽取最近 2—3 个月订单、工单、日报、库存和设备记录。</li>
+<li>输出数据完整率、同物不同名、工单未关闭、物料占用不清等问题清单。</li>
+</ul>
+<p><strong>验收：</strong> 所有硬约束有明确字段、单位、判断方式、责任人和版本。</p>
+<h3>阶段 1｜1—2 周：PTP 可行性规则引擎</h3>
+<ul>
+<li>先不优化顺序，只判断“某订单能否在某设备、某时段生产”。</li>
+<li>自动生成不可排原因、缺料和数据缺失清单。</li>
+<li>由计划员每天核验并修正规则。</li>
+</ul>
+<p><strong>验收：</strong> 试点订单的设备可行性判断正确率达到业务约定，且没有违反已确认硬约束的计划。</p>
+<h3>阶段 2｜2—4 周：PTP 建议排程与历史回放</h3>
+<ul>
+<li>加入交期风险、合单、宽到窄、换型和冻结区。</li>
+<li>用历史订单回放，与计划员实际排程比较。</li>
+<li>记录 AI 建议被接受、修改、拒绝的原因。</li>
+</ul>
+<p><strong>验收：</strong> 排产耗时下降、计划变更次数下降，准时交付和换型指标不劣于人工基线。</p>
+<h3>阶段 3｜4—8 周：接入实时状态并扩展 SP</h3>
+<ul>
+<li>接入物料齐套、质量放行、在制品、报工、停机和工装状态。</li>
+<li>增加 SP 复合、固化、二次复合和检品时窗。</li>
+<li>先由人工确认后写回 ERP，保持完整审计。</li>
+</ul>
+<h3>阶段 4｜稳定后：动态重排与多方案仿真</h3>
+<ul>
+<li>对设备故障、物料延期、质量冻结和急单自动触发重排建议。</li>
+<li>同时展示“保交期、少换型、少加班”三种方案及代价，交由负责人选择。</li>
+</ul>
+<hr>
+</section><section id="section-10"><h2><span class="no">10</span>十、项目成效应如何衡量</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>建议指标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据质量</td>
+<td>产品规格标准化率、机速覆盖率、BOM/路线版本完整率、库存占用准确率</td>
+</tr>
+<tr>
+<td>计划效率</td>
+<td>每日排产耗时、ERP 重复录入时间、查备库料时间、人工核对次数</td>
+</tr>
+<tr>
+<td>计划质量</td>
+<td>可执行计划率、计划变更次数、急单插单次数、平均冻结区破坏次数</td>
+</tr>
+<tr>
+<td>交付</td>
+<td>准时交付率、加权延期时长、交期风险提前发现天数</td>
+</tr>
+<tr>
+<td>生产</td>
+<td>换型/清洗时长、瓶颈设备利用率、在制品等待时间、加班工时</td>
+</tr>
+<tr>
+<td>质量</td>
+<td>因错误路线/设备/时窗导致的异常数、质量未放行误排数、追溯完整率</td>
+</tr>
+<tr>
+<td>采用</td>
+<td>AI 建议接受率、人工修改率、拒绝原因闭环率、规则更新周期</td>
+</tr>
+</tbody></table></div>
+<p>建议先记录 2—4 周人工基线，再判断智能排产是否真正创造价值，不能只看“系统是否能生成排单表”。</p>
+<hr>
+</section><section id="section-11"><h2><span class="no">11</span>十一、下一次排产专题会需要准备的资料</h2>
+<h3>会前资料</h3>
+<ol>
+<li>最近 2—3 个月订单明细、工单明细、生产日报、库存及占用明细。</li>
+<li>全部设备台账、班次日历、近 3—6 个月实际速度和停机记录。</li>
+<li>PTP、SP 各选 10—20 个代表产品的 BOM、工艺单和完整路线。</li>
+<li>近一个月急单、插单、延期、替代料、返工和质量冻结案例。</li>
+<li>版辊、圆刀、特殊工装和备库料清单。</li>
+</ol>
+<h3>会议必须形成的决议</h3>
+<ol>
+<li>PTP 第一批试点产品、设备与计划员。</li>
+<li>硬约束、软约束及冲突优先级的签字版本。</li>
+<li>客户等级、急单审批、冻结区和插单机制。</li>
+<li>12 张主数据表的负责人、交付日期和质量标准。</li>
+<li>ERP/中间件首批只读字段与人工确认后写回的边界。</li>
+<li>试点基线、验收指标和继续/调整/停止条件。</li>
+</ol>
+<hr>
+</section><section id="section-12"><h2><span class="no">12</span>十二、给管理层的一句话建议</h2>
+<p><strong>不要先追求“AI 自动排全厂”，要先把一个产品族、一组设备、一套规则的数据做准。</strong> 当 AI 能稳定回答“这张订单为什么能排、为什么不能排、插单会影响谁”，再逐步扩大范围，成功率最高、风险最低、见效也最快。</p>
+</section>
+      <footer>本报告依据现有工作簿进行诊断。所有设备边界、工艺参数、质量时窗、优先权重及接口字段，必须由浙江海顺计划、生产、技术、质量、仓储、销售与 IT 联合确认后生效。</footer>
+      <div class="copyright"><strong>版权所有：张强</strong><span>张强｜科技部创新创业领军人才 / 美国圣何塞州立大学访问学者 / 国家高层次人才特殊支持计划 / 上海工程技术大学客座教授</span></div>
+    </main>
+  </div>
+  <script>const links=[...document.querySelectorAll('.toc a')],sections=links.map(a=>document.querySelector(a.getAttribute('href')));const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-20% 0px -70% 0px'});sections.forEach(s=>s&&observer.observe(s));</script>
+</div></body></html>
