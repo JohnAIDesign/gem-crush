@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="蔚来基于飞书项目的跨组织协作案例与豆包工作生产力模式研究">
+  <title>跨组织协作与AI生产力案例研究</title>
+  <style>
+    :root{--ink:#102b3b;--teal:#08747f;--teal2:#0d929b;--paper:#f7f8f6;--line:#c9d7d5;--muted:#536870;--orange:#ef7d19;--wash:#eaf3f1;--soft:#fff5e8;--dark:#12354a;--serif:"Songti SC","STSong","Noto Serif CJK SC",serif;--sans:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.78 var(--sans)}a{color:var(--teal);text-underline-offset:3px}code{font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#e3ecea;padding:2px 5px;border-radius:3px}.progress{position:fixed;z-index:30;top:0;left:0;height:3px;background:var(--orange);width:0}.page{max-width:1480px;margin:auto;padding:0 42px 72px}.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:20px 0;border-bottom:2px solid var(--ink)}.mast img{width:185px;height:auto}.meta{text-align:right;color:var(--muted);font-size:12px}.meta b{display:block;color:var(--ink);font-size:14px}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}.toc{position:sticky;top:18px;align-self:start;max-height:calc(100vh - 36px);overflow:auto;margin-top:12px;padding:22px 18px 14px 0;border-right:1px solid var(--line)}.toc h2{font:700 13px var(--sans);letter-spacing:.14em;margin:0 0 12px}.toc a{display:block;padding:6px 0;color:var(--muted);font-size:12px;line-height:1.45;text-decoration:none}.toc a:hover,.toc a.active{color:var(--teal);font-weight:700}.toc b{display:inline-block;width:29px;color:var(--teal);font-family:Georgia,serif}main{min-width:0;padding-top:34px}.hero{padding:0 0 32px;border-bottom:1px solid var(--line)}h1{font:clamp(38px,5vw,64px)/1.13 var(--serif);letter-spacing:.02em;margin:0;max-width:1050px}.subtitle{font:20px var(--serif);color:#365c68;margin:12px 0 0}.desc{margin:18px 0 0;color:var(--muted);font-size:13px}.desc span+span:before{content:"｜";margin:0 8px;color:#a6b1b0}.route{display:grid;grid-template-columns:repeat(4,1fr);margin-top:30px;border-top:3px solid var(--teal)}.route div{position:relative;padding:16px 14px 4px;border-right:1px dashed #a9bbb7;font-size:13px}.route div:last-child{border-right:0}.route div:before{content:"";position:absolute;top:-7px;left:14px;width:11px;height:11px;border-radius:50%;background:var(--teal)}.route b{display:block;color:var(--teal);font:700 12px Georgia,serif}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#d9c6aa;border-block:1px solid #d9c6aa;margin-top:28px}.metric{padding:18px;background:#f5efe5}.metric strong{display:block;color:var(--orange);font:30px Georgia,serif}.metric span{color:var(--muted);font-size:12px}section{padding:42px 0 9px;border-bottom:1px solid var(--line)}section h2{font:26px/1.35 var(--serif);margin:0 0 20px}.no{margin-right:12px;color:var(--teal);font:700 17px Georgia,serif}h3{margin:29px 0 10px;color:var(--teal);font-size:18px}h4{margin:21px 0 7px;padding-left:10px;border-left:3px solid var(--orange);font-size:15px}p{margin:8px 0 14px}ul,ol{padding-left:23px;margin:10px 0 20px}li{margin:6px 0}.callout{margin:18px 0;padding:16px 19px;background:var(--soft);border-left:4px solid var(--orange)}.fact{background:var(--wash);border-left-color:var(--teal)}.table-wrap{overflow-x:auto;margin:14px 0 23px}table{width:100%;min-width:820px;border-collapse:collapse;font-size:13px;line-height:1.62}th{padding:10px 11px;background:var(--teal);color:white;text-align:left}td{padding:11px;vertical-align:top;border:1px solid var(--line);background:rgba(255,255,255,.46)}tr:nth-child(even) td{background:#edf4f2}.flow{display:flex;align-items:stretch;gap:0;margin:22px 0;overflow-x:auto}.flow div{min-width:145px;flex:1;padding:15px 13px;background:white;border-block:1px solid var(--line);font-size:13px}.flow div:first-child{border-left:3px solid var(--teal)}.flow div+div:before{content:"→";float:left;margin-left:-24px;color:var(--orange);font-weight:700}.flow strong{display:block;color:var(--teal)}.two-leaps{display:grid;grid-template-columns:1fr 72px 1fr;align-items:stretch;margin:24px 0}.leap{padding:24px;background:white;border-top:4px solid var(--teal)}.leap h3{margin:0 0 10px}.arrow{display:grid;place-items:center;color:var(--orange);font-size:32px}.glossary{columns:2;column-gap:36px}.term{break-inside:avoid;padding:10px 0;border-bottom:1px dotted var(--line)}.term b{display:inline-block;min-width:82px;color:var(--teal)}.source-list li{margin:10px 0}.copyright{margin-top:22px;padding-top:17px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.copyright strong{display:block;color:var(--ink);font-size:13px}.tools{display:flex;justify-content:flex-end;margin-top:16px}.print{border:1px solid var(--teal);background:transparent;color:var(--teal);border-radius:3px;padding:7px 12px;font:600 12px var(--sans);cursor:pointer}.print:hover{background:var(--teal);color:white}
+    @media(max-width:1050px){.route,.metrics{grid-template-columns:1fr 1fr}.two-leaps{grid-template-columns:1fr}.arrow{height:55px;transform:rotate(90deg)}}
+    @media(max-width:760px){.page{padding:0 18px 48px}.layout{display:block}.toc{display:none}.mast img{width:145px}.meta{font-size:11px}.route,.metrics{grid-template-columns:1fr}.route{border-top:0;border-left:3px solid var(--teal)}.route div{border-right:0;border-bottom:1px dashed var(--line);padding-left:20px}.route div:before{top:20px;left:-7px}.desc span{display:block}.desc span+span:before{content:"";margin:0}h1{font-size:37px}.subtitle{font-size:17px}.glossary{columns:1}.tools{justify-content:flex-start}}
+    @media print{body{background:white}.progress,.toc,.tools{display:none}.page{max-width:none;padding:0 20px}.layout{display:block}section{break-inside:auto}.callout,.two-leaps,.copyright{break-inside:avoid}a{color:inherit;text-decoration:none}}
+  </style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="page">
+  <header class="mast">
+    <img src="AI修理工_logo_白底.png" alt="AI修理工">
+    <div class="meta"><b>企业数字化与AI案例研究</b>2026年8月28日｜公开资料整理版</div>
+  </header>
+  <div class="layout">
+    <nav class="toc" aria-label="目录">
+      <h2>目录</h2>
+      <a href="#summary"><b>01</b>执行摘要</a>
+      <a href="#leaps"><b>02</b>两次协作跃迁</a>
+      <a href="#mechanism"><b>03</b>供应商共生机制</a>
+      <a href="#doubao"><b>04</b>豆包工作</a>
+      <a href="#difference"><b>05</b>产品边界</a>
+      <a href="#together"><b>06</b>组合价值</a>
+      <a href="#limits"><b>07</b>事实边界</a>
+      <a href="#sources"><b>08</b>公开来源</a>
+      <a href="#glossary"><b>09</b>英文术语表</a>
+    </nav>
+    <main>
+      <div class="hero">
+        <h1>跨组织协作与AI生产力</h1>
+        <p class="subtitle">蔚来×飞书项目的两次跃迁｜豆包工作如何从“回答问题”走向“完成任务”</p>
+        <p class="desc"><span>公开案例研究</span><span>适用：企业管理层、CIO、数字化负责人、AI FDE</span><span>检索日期：2026-08-28</span></p>
+        <div class="route"><div><b>STEP 1</b>统一内部研发协作</div><div><b>STEP 2</b>连接外部合作伙伴</div><div><b>STEP 3</b>AI预审与数据闭环</div><div><b>STEP 4</b>Agent执行复杂工作</div></div>
+        <div class="metrics"><div class="metric"><strong>2次</strong><span>从企业内部到产业协同的跃迁</span></div><div class="metric"><strong>3流</strong><span>需求流、数据流、价值流合一</span></div><div class="metric"><strong>200+</strong><span>公开报道所称技能与连接器</span></div><div class="metric"><strong>1原则</strong><span>AI辅助执行，业务人员最终负责</span></div></div>
+        <div class="tools"><button class="print" onclick="window.print()">打印 / 导出PDF</button></div>
+      </div>
+
+      <section id="summary">
+        <h2><span class="no">01</span>执行摘要</h2>
+        <p>两个主题共同指向同一个管理变化：企业不再只把AI当作问答工具，也不再只把项目软件当作任务清单，而是把<strong>流程、数据、责任和AI执行能力</strong>放进真实工作现场。</p>
+        <div class="table-wrap"><table><thead><tr><th>主题</th><th>解决的问题</th><th>核心机制</th><th>管理价值</th></tr></thead><tbody>
+          <tr><td>蔚来×飞书项目</td><td>跨部门、跨企业协作中信息分散、文件催办、审核重复</td><td>统一流程、飞书互联、APQP/PPAP在线交付、AI文件预审</td><td>把供应商管理转为过程透明、共同改进的合作伙伴生态</td></tr>
+          <tr><td>豆包工作</td><td>员工在网页、文件、表格与软件之间反复切换</td><td>理解目标、拆解任务、调用工具、处理文件、持续执行并交付成果</td><td>把“人操作每一步”转为“人定目标、AI执行、人验收”</td></tr>
+        </tbody></table></div>
+        <aside class="callout fact"><strong>事实与解读说明：</strong>蔚来官方公开案例确认了内部研发协作、能源销售敏捷转型和供应商生态AI赋能的演进，但没有公开把演讲内容逐字编号为“两次跃迁”。本文将“内部跨部门协同”和“跨企业供应商协同”作为分析性归纳，不冒充演讲原话。</aside>
+      </section>
+
+      <section id="leaps">
+        <h2><span class="no">02</span>基于飞书项目的两次跨组织协作跃迁</h2>
+        <div class="two-leaps">
+          <article class="leap"><h3>第一次：企业内部跨部门</h3><p><strong>从：</strong>产品、软件、硬件、质量、供应链分别使用不同表格和系统。</p><p><strong>到：</strong>围绕产品研发建立统一流程，连接需求创建、评审、开发、验证和用户满意度回顾。</p><p><strong>结果：</strong>需求流、数据流、价值流逐步合一，业务人员能够在可配置流程中协作。</p></article>
+          <div class="arrow">→</div>
+          <article class="leap"><h3>第二次：跨企业合作伙伴</h3><p><strong>从：</strong>供应商通过邮件、网盘和线下文件提交，质量人员人工催办与审核。</p><p><strong>到：</strong>合作伙伴通过互联租户进入协同平台，在线提交APQP/PPAP交付物，AI先预审、人员再复核。</p><p><strong>结果：</strong>交付过程可追踪，质量问题可整改，绩效评价有数据，协作从交易关系走向共同改进。</p></article>
+        </div>
+        <h3>第一次跃迁的关键</h3>
+        <ul><li>先从局部团队试点，验证流程灵活性和业务接受度。</li><li>将用户需求连接到研发任务，并与既有研发工具进行集成。</li><li>允许业务在治理范围内自助配置流程，减少每次变更都等待IT开发。</li><li>让执行过程、版本、责任人和交付物进入同一可追溯环境。</li></ul>
+        <h3>第二次跃迁的关键</h3>
+        <ul><li>供应商在权限隔离下进入与自己相关的项目空间，而非进入整车企业全部系统。</li><li>把里程碑、交付标准和质量门嵌入流程，不再只在末端接收文件。</li><li>AI承担高重复、规则性强且需要一定专业判断的文字预审。</li><li>质量人员聚焦关键风险、异常处置、供应商能力提升和决策。</li></ul>
+      </section>
+
+      <section id="mechanism">
+        <h2><span class="no">03</span>蔚来与供应商“合作共生”的运行机制</h2>
+        <div class="flow"><div><strong>任务发布</strong>定义里程碑、交付物与标准</div><div><strong>伙伴协作</strong>互联账号进入授权空间</div><div><strong>资料提交</strong>上传APQP/PPAP交付物</div><div><strong>AI预审</strong>检查缺项、规则与一致性</div><div><strong>人工复核</strong>关键质量判断与整改</div><div><strong>数据闭环</strong>绩效评价与持续改进</div></div>
+        <div class="table-wrap"><table><thead><tr><th>变化</th><th>传统做法</th><th>合作共生做法</th></tr></thead><tbody>
+          <tr><td>关系</td><td>采购方与供货方</td><td>共同研发、共同提升质量的合作伙伴</td></tr>
+          <tr><td>协作</td><td>邮件、群聊、网盘、人工催办</td><td>统一项目空间、任务和状态提醒</td></tr>
+          <tr><td>质量</td><td>结果文件到齐后集中审核</td><td>过程质量门、AI预审、人工决策</td></tr>
+          <tr><td>评价</td><td>经验印象和结果考核</td><td>交付及时性、文件质量、整改周期等过程数据</td></tr>
+          <tr><td>能力</td><td>发现问题后追责</td><td>用规则、数据和反馈帮助合作伙伴持续改进</td></tr>
+        </tbody></table></div>
+        <aside class="callout"><strong>管理本质：</strong>共生不是减少质量要求，而是把要求提前、把过程透明、把重复审核交给AI，把人的精力用于更高价值的协商和判断。</aside>
+      </section>
+
+      <section id="doubao">
+        <h2><span class="no">04</span>豆包工作，重塑生产力</h2>
+        <p>“豆包工作”是面向办公生产力场景的Agent产品。它强调围绕用户目标自主拆解任务、调用工具、处理资料和持续推进工作，不再局限于一次性内容生成。</p>
+        <h3>从聊天助手到工作Agent</h3>
+        <div class="table-wrap"><table><thead><tr><th>维度</th><th>传统AI聊天</th><th>豆包工作所代表的工作Agent</th></tr></thead><tbody>
+          <tr><td>输入</td><td>一个问题或一段提示词</td><td>一个需要完成的工作目标</td></tr>
+          <tr><td>过程</td><td>模型一次生成回答</td><td>拆解步骤、浏览资料、操作文件、调用工具、持续执行</td></tr>
+          <tr><td>交互</td><td>反复复制、粘贴和重新生成</td><td>过程可查看、可暂停、可人工介入、可局部修改</td></tr>
+          <tr><td>上下文</td><td>主要依赖当前对话投喂</td><td>可在授权范围内连接本地文件、网页和飞书企业信息</td></tr>
+          <tr><td>交付</td><td>文字回答</td><td>文档、表格、分析、演示材料或执行结果</td></tr>
+        </tbody></table></div>
+        <h3>公开资料中的主要能力</h3>
+        <ul><li><strong>任务拆解：</strong>根据目标规划步骤，而不是要求员工逐项下指令。</li><li><strong>本地与云端：</strong>处理文档、图片、代码、表格；长耗时任务可在独立环境继续运行。</li><li><strong>侧边工作台：</strong>对话、网页、文件和结果同屏，支持针对局部内容定向修改。</li><li><strong>技能与连接器：</strong>把成熟工作范式沉淀为可复用Skill，并通过连接器调用外部工具。</li><li><strong>企业上下文：</strong>在授权范围内理解飞书聊天、文档、会议纪要和日程，成果可回写为团队知识资产。</li></ul>
+        <aside class="callout fact"><strong>可用入口：</strong>公开报道显示可通过独立电脑版、豆包电脑端工作模式或飞书相应入口使用；实际功能、操作系统支持、账号权限和企业套餐应以当前官方页面及企业开通结果为准。</aside>
+      </section>
+
+      <section id="difference">
+        <h2><span class="no">05</span>豆包、豆包工作与豆包工作伙伴的边界</h2>
+        <div class="table-wrap"><table><thead><tr><th>产品</th><th>定位</th><th>适合对象</th><th>典型用途</th></tr></thead><tbody>
+          <tr><td>豆包</td><td>通用AI助手</td><td>个人用户</td><td>问答、搜索、写作、图像与通用内容生成</td></tr>
+          <tr><td>豆包工作</td><td>面向工作任务的通用Agent</td><td>员工、管理者、顾问</td><td>研究、文件处理、数据分析、方案与报告交付</td></tr>
+          <tr><td>豆包工作伙伴</td><td>企业Agent协作与建设平台，原飞书Aily</td><td>企业IT、AI团队、业务部门</td><td>企业知识助手、业务Agent、受控工具调用与专属工作流</td></tr>
+          <tr><td>飞书项目</td><td>流程与项目协作底座</td><td>研发、质量、供应链与项目团队</td><td>流程、任务、里程碑、交付物、跨企业协作</td></tr>
+        </tbody></table></div>
+      </section>
+
+      <section id="together">
+        <h2><span class="no">06</span>两类产品组合后产生什么价值</h2>
+        <p><strong>飞书项目解决“工作应该怎样流转”，豆包工作解决“AI可以帮人完成哪些步骤”。</strong></p>
+        <div class="flow"><div><strong>业务目标</strong>人提出需要完成的结果</div><div><strong>项目流程</strong>明确节点、责任与权限</div><div><strong>Agent执行</strong>搜集、整理、核对、生成</div><div><strong>人工决策</strong>审批关键判断与例外</div><div><strong>系统沉淀</strong>写回任务、知识和业务结果</div></div>
+        <p>如果只有Agent而没有流程，AI可能不知道何时执行、由谁验收、错误如何处理；如果只有项目流程而没有AI，大量资料搜集、核对和报告工作仍然依赖人工。两者结合，才可能形成“流程约束AI、AI加速流程”的闭环。</p>
+      </section>
+
+      <section id="limits">
+        <h2><span class="no">07</span>事实边界与企业采用提醒</h2>
+        <ul><li>目前没有检索到活动演讲的完整公开PPT或逐字稿，本文不把分析性归纳写成演讲者原话。</li><li>蔚来公开案例提到审核效率提升，但未公布具体比例，因此不引用未经证实的量化收益。</li><li>豆包工作属于新发布产品，企业级稳定性、数据驻留、权限继承、审计和套餐边界需在POC中验证。</li><li>AI预审不等于质量批准；生产、质量、财务和合同等高风险结果必须由授权人员最终确认。</li><li>电脑自动操作适合低风险、可回退任务；核心系统写入应优先使用受控API、审批和日志。</li></ul>
+      </section>
+
+      <section id="sources">
+        <h2><span class="no">08</span>公开资料来源</h2>
+        <ol class="source-list">
+          <li><a href="https://project.feishu.cn/home/customers/NIO">飞书项目客户案例｜蔚来汽车：当“货架式IPD”遇上飞书项目</a>（飞书项目官方）</li>
+          <li><a href="https://www.feishu.cn/content/wechat_post_34">蔚来汽车姜勇：如何通过提升研发效能，加速创新？</a>（飞书官方）</li>
+          <li><a href="https://project.feishu.cn/home/blogs/practice-vm">供应商管理最佳实践</a>（飞书项目官方）</li>
+          <li><a href="https://project.feishu.cn/home/template/qchyryxtyf">汽车软硬件一体化研发协同模板</a>（飞书项目官方）</li>
+          <li><a href="https://www.feishu.cn/community/course?id=7677811660601429175">豆包工作新品见面会</a>（飞书官方社区）</li>
+          <li><a href="https://www.feishu.cn/community/course?id=7661849741298240446&amp;tab=course">豆包工作亮点功能系列培训</a>（飞书官方社区）</li>
+          <li><a href="https://news.10jqka.com.cn/20260827/c679339851.shtml">豆包工作正式发布，赋能办公生产力提升</a>（经济参考报转载页面，作为产品细节辅助来源）</li>
+        </ol>
+      </section>
+
+      <section id="glossary">
+        <h2><span class="no">09</span>英文单词与缩写中文备注</h2>
+        <div class="glossary">
+          <div class="term"><b>AI</b>Artificial Intelligence，人工智能。</div>
+          <div class="term"><b>Agent</b>智能体，能够理解目标、拆解任务并调用工具执行工作的AI系统。</div>
+          <div class="term"><b>APQP</b>Advanced Product Quality Planning，产品质量先期策划。</div>
+          <div class="term"><b>PPAP</b>Production Part Approval Process，生产件批准程序。</div>
+          <div class="term"><b>IPD</b>Integrated Product Development，集成产品开发。</div>
+          <div class="term"><b>R&amp;D</b>Research and Development，研究与开发。</div>
+          <div class="term"><b>Jira</b>常见的软件研发项目与问题跟踪工具名称。</div>
+          <div class="term"><b>Skill</b>技能，把固定步骤、规则、模板和验收要求沉淀为可重复调用的AI能力。</div>
+          <div class="term"><b>MCP</b>Model Context Protocol，模型上下文协议，用于让AI以标准方式连接工具和数据。</div>
+          <div class="term"><b>API</b>Application Programming Interface，应用程序编程接口。</div>
+          <div class="term"><b>GUI</b>Graphical User Interface，图形用户界面。</div>
+          <div class="term"><b>POC</b>Proof of Concept，概念验证，用小范围试点证明方案可行和有价值。</div>
+        </div>
+      </section>
+
+      <div class="copyright"><strong>版权所有：张强</strong><span>张强｜科技部创新创业领军人才 / 美国圣何塞州立大学访问学者 / 国家高层次人才特殊支持计划 / 上海工程技术大学客座教授</span></div>
+    </main>
+  </div>
+</div>
+<script>
+  const links=[...document.querySelectorAll('.toc a')],sections=links.map(a=>document.querySelector(a.getAttribute('href')));
+  const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(s=>s&&observer.observe(s));
+  addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progress').style.width=((h.scrollTop/Math.max(1,h.scrollHeight-h.clientHeight))*100)+'%'},{passive:true});
+</script>
+</body>
+</html>
