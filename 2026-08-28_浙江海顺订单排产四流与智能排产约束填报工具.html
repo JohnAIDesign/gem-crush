@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="浙江海顺订单—排产四流信息及智能排产约束补充填报工具，支持本机自动保存、下载HTML和JSON回传。">
+<title>浙江海顺订单—排产四流与智能排产约束填报工具</title>
+<style>
+:root{--ink:#17324a;--muted:#5d7182;--blue:#2476d8;--orange:#e8752e;--teal:#16827b;--purple:#7354b3;--line:#bfd0df;--paper:#f4f7fa;--white:#fff;--warn:#fff6e8;--red:#a84337;--sans:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;background:#dfe7ee;color:var(--ink);font-family:var(--sans)}
+.sheet{width:1680px;min-height:1188px;margin:0 auto;background:var(--paper);padding:42px 48px 34px}
+.top{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:3px solid var(--ink);padding-bottom:16px}.top h1{font-size:34px;line-height:1.2;margin:0}.top p{margin:7px 0 0;color:var(--muted);font-size:15px}.meta{text-align:right;font-size:13px;color:var(--muted)}
+.diagnosis{display:grid;grid-template-columns:190px 1fr 1.35fr;gap:0;margin:20px 0 15px;border:1px solid var(--line);background:#fff}.diagnosis>div{padding:12px 16px;border-right:1px solid var(--line);font-size:13px;line-height:1.6}.diagnosis>div:last-child{border-right:0}.diagnosis strong{display:block;font-size:14px;margin-bottom:2px}.diagnosis .yes{border-top:4px solid var(--teal)}.diagnosis .gap{border-top:4px solid var(--orange)}.diagnosis .use{border-top:4px solid var(--blue)}
+.legend{display:flex;gap:22px;align-items:center;margin:10px 0 13px;font-size:12px;color:var(--muted)}.dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}.b{background:var(--blue)}.o{background:var(--orange)}.t{background:var(--teal)}.p{background:var(--purple)}
+table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;background:#fff;border:1px solid #9fb5c7;font-size:12px;line-height:1.38}th{padding:9px 8px;color:#fff;border-right:1px solid rgba(255,255,255,.3);font-size:14px}th:nth-child(1){background:var(--ink)}th:nth-child(2){background:var(--blue)}th:nth-child(3){background:var(--orange)}th:nth-child(4){background:var(--teal)}th:nth-child(5){background:var(--purple)}th:nth-child(6){background:#566b7c}td{height:135px;padding:8px 9px;vertical-align:top;border-right:1px solid var(--line);border-top:1px solid var(--line)}tr:first-child td{border-top:0}th:last-child,td:last-child{border-right:0}.node{background:#f2f6f9}.node b{display:block;font-size:15px;line-height:1.35;margin-bottom:6px}.node span{display:block;color:var(--muted);font-size:11px}.prompt{color:#304b60}.prompt b{color:var(--ink)}.fill{margin-top:5px;min-height:30px;padding:4px 5px;border:1px dashed #9eb2c1;background:#fbfdff;color:#455e70;outline:none;white-space:pre-wrap;overflow-wrap:anywhere}.fill:focus,.fill.is-edited{background:#fffdea;border-color:var(--orange)}.inline-fill{display:inline-block;min-width:110px;padding:0 4px;border-bottom:1px dashed #71889a;outline:none;color:var(--ink)}.checks{display:grid;gap:4px;margin-top:5px;color:#647887}.checks label{display:flex;align-items:center;gap:3px}.owner .fill{min-height:25px}.actionbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:14px;margin:12px 0;padding:10px 12px;background:rgba(244,247,250,.96);border:1px solid var(--line);box-shadow:0 4px 12px rgba(23,50,74,.08);backdrop-filter:blur(8px)}.save-status{font-size:12px;color:var(--muted)}.save-status strong{color:var(--teal)}.actions{display:flex;flex-wrap:wrap;gap:7px}.actions button,.file-label{border:1px solid var(--blue);background:#fff;color:var(--blue);padding:7px 11px;border-radius:4px;font:700 12px var(--sans);cursor:pointer}.actions button:hover,.file-label:hover{background:var(--blue);color:#fff}.actions .primary{background:var(--blue);color:#fff}.actions .danger{border-color:var(--red);color:var(--red)}.actions .danger:hover{background:var(--red);color:#fff}.github-note{margin:10px 0 15px;padding:10px 13px;background:var(--warn);border-left:5px solid var(--orange);font-size:12px;line-height:1.6}.section-title{display:flex;align-items:flex-end;justify-content:space-between;margin:28px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--ink)}.section-title h2{margin:0;font-size:24px}.section-title p{margin:0;color:var(--muted);font-size:12px}.constraints-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.constraint-card{display:grid;grid-template-columns:210px 1fr;background:#fff;border:1px solid var(--line);min-height:125px}.constraint-card h3{margin:0;padding:14px;background:#edf3f7;font-size:15px;line-height:1.45}.constraint-card h3 span{display:block;margin-top:5px;color:var(--muted);font-size:11px;font-weight:400}.constraint-body{padding:11px 13px;font-size:12px;line-height:1.48}.constraint-body b{color:var(--ink)}.constraint-body .fill{min-height:48px}.footer{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:14px;margin-top:14px}.footer>div{background:#fff;border:1px solid var(--line);padding:10px 13px;font-size:12px;line-height:1.55}.footer strong{display:block;margin-bottom:3px}.warn{border-left:5px solid var(--orange)!important}.note{border-left:5px solid var(--teal)!important}.rule{border-left:5px solid var(--blue)!important}
+@media(max-width:900px){body{overflow-x:auto}.sheet{transform-origin:top left}.actionbar{position:static}}
+@media print{html,body{background:#fff}.sheet{width:auto;min-height:auto;margin:0;padding:10mm}.actionbar,.github-note{display:none}.constraints-grid{break-inside:auto}.constraint-card,.footer>div{break-inside:avoid}@page{size:A3 landscape;margin:0}}
+</style>
+</head>
+<body><main class="sheet">
+<header class="top"><div><h1>订单—排产“四流”与智能排产约束填报工具</h1><p>浙江海顺生产计划｜补齐四流、约束、规则和数据，为智能排产与系统开发提供可验证输入</p></div><div class="meta">版本 V2.0<br>填写日期：<span class="inline-fill" contenteditable="true">____年____月____日</span><br>填写人/部门：<span class="inline-fill" contenteditable="true">________________</span></div></header>
+
+<section class="diagnosis"><div class="yes"><strong>原图已经具备</strong>动作、输入、规则、产出、对接部门</div><div class="gap"><strong>仍需重点补齐</strong>字段级数据、系统来源/去向、判断阈值、决策人与审批、异常分支、责任时限及排产硬约束</div><div class="use"><strong>填写方法</strong>由节点负责人按真实现状填写；不知道的写“待确认”。输入会自动保存在当前浏览器，完成后务必下载HTML或导出JSON回传。</div></section>
+
+<div class="actionbar" role="toolbar" aria-label="填报保存工具"><div class="save-status" id="saveStatus">状态：<strong>等待填写</strong><br><span id="saveTime">尚未保存</span></div><div class="actions"><button type="button" class="primary" id="saveNow">立即保存</button><button type="button" id="downloadHtml">下载已填写HTML</button><button type="button" id="exportJson">导出JSON</button><label class="file-label" for="importJson">导入JSON</label><input id="importJson" type="file" accept="application/json,.json" hidden><button type="button" id="printPdf">打印 / 导出PDF</button><button type="button" class="danger" id="clearAll">清空重填</button></div></div>
+<div class="github-note"><strong>公网发布提示：</strong>请用 GitHub Pages 页面地址发给填写者。GitHub Pages本身不会集中保存表单数据；“自动保存”仅保存在填写者当前浏览器。正式回传请下载已填写HTML或导出JSON后发回项目负责人。不要填写患者、客户隐私或未脱敏商业秘密。</div>
+
+<div class="legend"><span><i class="dot b"></i>业务流：做什么、前后怎么衔接</span><span><i class="dot o"></i>信息流：哪些字段、来自哪里、流向哪里</span><span><i class="dot t"></i>决策流：谁按什么条件作决定</span><span><i class="dot p"></i>协调流：谁主责、谁配合、多久完成</span></div>
+
+<table aria-label="六节点四流信息补充填报表"><colgroup><col style="width:11%"><col style="width:19%"><col style="width:23%"><col style="width:21%"><col style="width:19%"><col style="width:7%"></colgroup>
+<thead><tr><th>流程节点</th><th>业务流</th><th>信息流</th><th>决策流</th><th>部门协调流</th><th>责任/进度</th></tr></thead><tbody>
+<tr><td class="node"><b>① 订单接收<br>与评审</b><span>现有：接单、确认交期、产能负荷评审</span></td><td class="prompt"><b>补充：</b>正式接单起点？评审顺序？不通过退回哪里？<div class="fill" contenteditable="true">填写：____________________________</div></td><td class="prompt"><b>补充：</b>订单必填字段、ERP表单/来源、评审结果传给谁？<div class="fill" contenteditable="true">字段/系统/去向：__________________</div></td><td class="prompt"><b>补充：</b>可承接条件、承诺交期算法、加急规则、最终批准人？<div class="fill" contenteditable="true">条件/阈值/决策人：________________</div></td><td class="prompt"><b>补充：</b>销售、客服、计划谁主责？回复时限？客户变更如何确认？<div class="fill" contenteditable="true">主责/协同/SLA：___________________</div></td><td class="owner">负责人<div class="fill" contenteditable="true"></div>完成日<div class="fill" contenteditable="true"></div><div class="checks">□现状<br>□确认</div></td></tr>
+
+<tr><td class="node"><b>② 预排与<br>物料拆解</b><span>现有：BOM展开、毛需求、批量、粗排工单</span></td><td class="prompt"><b>补充：</b>BOM展开步骤？批量合并/拆分？BOM错误退回哪个环节？<div class="fill" contenteditable="true">填写：____________________________</div></td><td class="prompt"><b>补充：</b>BOM版本、工艺路线、损耗率、在制量分别来自哪个系统/表？<div class="fill" contenteditable="true">字段/系统/更新频率：______________</div></td><td class="prompt"><b>补充：</b>最小/经济批量、替代料、损耗、工艺顺序由谁确认？<div class="fill" contenteditable="true">规则/例外/批准人：________________</div></td><td class="prompt"><b>补充：</b>技术部维护时限？计划发现主数据错误如何提报和关闭？<div class="fill" contenteditable="true">主责/协同/闭环证据：______________</div></td><td class="owner">负责人<div class="fill" contenteditable="true"></div>完成日<div class="fill" contenteditable="true"></div><div class="checks">□现状<br>□确认</div></td></tr>
+
+<tr><td class="node"><b>③ 齐套与<br>产能校验</b><span>现有：库存、在途、设备负荷与瓶颈校验</span></td><td class="prompt"><b>补充：</b>先查库存还是在途？部分齐套能否开工？缺料后回到哪里？<div class="fill" contenteditable="true">填写：____________________________</div></td><td class="prompt"><b>补充：</b>可用库存口径、锁定量、采购到货日期、设备状态来源及准确率？<div class="fill" contenteditable="true">字段/系统/质量问题：______________</div></td><td class="prompt"><b>补充：</b>齐套判定公式、产能上限、瓶颈阈值、缺料时的优先级取舍？<div class="fill" contenteditable="true">公式/阈值/决策人：________________</div></td><td class="prompt"><b>补充：</b>仓库、采购、计划、车间如何确认？缺料回复和升级时限？<div class="fill" contenteditable="true">RACI/SLA/升级路径：_______________</div></td><td class="owner">负责人<div class="fill" contenteditable="true"></div>完成日<div class="fill" contenteditable="true"></div><div class="checks">□现状<br>□确认</div></td></tr>
+
+<tr><td class="node"><b>④ 详细排产<br>与发布</b><span>现有：优先级、机台、工单、日周计划</span></td><td class="prompt"><b>补充：</b>排产先后步骤？锁定窗口？发布后允许谁修改？冲突退回哪里？<div class="fill" contenteditable="true">填写：____________________________</div></td><td class="prompt"><b>补充：</b>订单优先级、设备日历、人员班次、模具/工装、换线时间的数据来源？<div class="fill" contenteditable="true">字段/系统/去向：__________________</div></td><td class="prompt"><b>补充：</b>排序目标及权重？插单/换线/同机台冲突规则？发布审批人？<div class="fill" contenteditable="true">目标/权重/批准人：________________</div></td><td class="prompt"><b>补充：</b>计划、车间主任、班组长怎样会签？何时算“已接收”？<div class="fill" contenteditable="true">主责/签收/SLA：___________________</div></td><td class="owner">负责人<div class="fill" contenteditable="true"></div>完成日<div class="fill" contenteditable="true"></div><div class="checks">□现状<br>□确认</div></td></tr>
+
+<tr><td class="node"><b>⑤ 进度跟踪<br>与反馈</b><span>现有：报工、差异、日报、在制看板</span></td><td class="prompt"><b>补充：</b>报工时点？谁确认完工？差异出现后转交哪个异常流程？<div class="fill" contenteditable="true">填写：____________________________</div></td><td class="prompt"><b>补充：</b>计划量、实际量、良品/不良、停机、工序在制从MES还是人工表获取？<div class="fill" contenteditable="true">字段/系统/采集频率：______________</div></td><td class="prompt"><b>补充：</b>差异预警是否统一为10%？按产品/工序是否不同？谁判定需重排？<div class="fill" contenteditable="true">阈值/例外/决策人：________________</div></td><td class="prompt"><b>补充：</b>班组、生产、质量、计划的信息反馈路径与最晚更新时间？<div class="fill" contenteditable="true">主责/协同/SLA：___________________</div></td><td class="owner">负责人<div class="fill" contenteditable="true"></div>完成日<div class="fill" contenteditable="true"></div><div class="checks">□现状<br>□确认</div></td></tr>
+
+<tr><td class="node"><b>⑥ 异常调整<br>与闭环</b><span>现有：设备/物料/插单、重排、通知</span></td><td class="prompt"><b>补充：</b>异常分类？重排从②还是④开始？关闭标准和复盘动作是什么？<div class="fill" contenteditable="true">填写：____________________________</div></td><td class="prompt"><b>补充：</b>异常单、影响订单、替代资源、新交期、版本号及通知回执保存在哪里？<div class="fill" contenteditable="true">字段/系统/审计证据：______________</div></td><td class="prompt"><b>补充：</b>换单、拆单、插单、交期变更分别由谁批准？不可解决时升级给谁？<div class="fill" contenteditable="true">分级/批准/升级路径：______________</div></td><td class="prompt"><b>补充：</b>设备、采购、生产、客服、销售、客户如何同步？谁确认已知悉？<div class="fill" contenteditable="true">主责/通知/回执/SLA：______________</div></td><td class="owner">负责人<div class="fill" contenteditable="true"></div>完成日<div class="fill" contenteditable="true"></div><div class="checks">□现状<br>□确认</div></td></tr>
+</tbody></table>
+
+<section class="section-title"><h2>智能排产关键约束补充表</h2><p>仅有六步流程仍不足以计算可执行排程；以下内容决定“能不能排、怎么排、排得好不好”。</p></section>
+<div class="constraints-grid">
+<article class="constraint-card"><h3>01 需求与订单分层<span>决定哪些需求进入排程</span></h3><div class="constraint-body"><b>请补充：</b>正式订单、框架订单、预测需求、安全库存补货如何区分？客户等级、加急、交期可信度和订单冻结规则是什么？<div class="fill" contenteditable="true">现状规则、字段、责任人：________________________________</div></div></article>
+<article class="constraint-card"><h3>02 产品与工艺主数据<span>决定工序先后及版本</span></h3><div class="constraint-body"><b>请补充：</b>产品—BOM—工艺路线—标准工时—良率/损耗率如何关联？版本生效、变更和错误修正由谁维护？<div class="fill" contenteditable="true">主数据来源、版本、质量问题：____________________________</div></div></article>
+<article class="constraint-card"><h3>03 设备/工艺适配矩阵<span>决定订单可在哪台设备生产</span></h3><div class="constraint-body"><b>请补充：</b>产品规格、印版/辊筒/模具、材料、颜色、涂布配方分别允许哪些机台？主选与备选设备、禁排组合是什么？<div class="fill" contenteditable="true">机台适配、替代资源、禁排规则：__________________________</div></div></article>
+<article class="constraint-card"><h3>04 批量与换型矩阵<span>决定合单、拆单和排序成本</span></h3><div class="constraint-body"><b>请补充：</b>最小/最大/经济批量、允许拆批/合批条件；颜色、材料、规格、配方切换的清洗/换版/换线时间及优先顺序？<div class="fill" contenteditable="true">批量规则、换型时间矩阵：________________________________</div></div></article>
+<article class="constraint-card"><h3>05 物料与质量状态<span>决定库存是否真正可用</span></h3><div class="constraint-body"><b>请补充：</b>现存、锁定、在途、待检、合格、隔离、过期批次如何区分？替代料、批号追溯、质量放行和有效期规则是什么？<div class="fill" contenteditable="true">库存口径、质检状态、追溯规则：__________________________</div></div></article>
+<article class="constraint-card"><h3>06 资源日历与可用产能<span>决定每天真正能生产多少</span></h3><div class="constraint-body"><b>请补充：</b>班次、人员技能、设备速度、维护保养、停机、节假日、工装数量、质量检验能力如何进入有限产能计算？<div class="fill" contenteditable="true">资源日历、效率系数、维护计划：__________________________</div></div></article>
+<article class="constraint-card"><h3>07 药包材合规约束<span>决定哪些安排不得违反</span></h3><div class="constraint-body"><b>请补充：</b>清场、清洁验证、洁净区、首件检验、过程检验、质量放行、批记录和批号连续性有哪些硬性等待或禁排条件？<div class="fill" contenteditable="true">GMP/质量硬约束、放行时长：______________________________</div></div></article>
+<article class="constraint-card"><h3>08 排产目标与权重<span>决定多个可行计划如何取舍</span></h3><div class="constraint-body"><b>请补充：</b>交期达成、订单优先级、换型最少、设备利用率、在制品、库存、稳定性分别多重要？冲突时谁拥有最终解释权？<div class="fill" contenteditable="true">目标、权重、优先级、批准人：____________________________</div></div></article>
+<article class="constraint-card"><h3>09 冻结窗口与版本管理<span>防止计划每天反复变化</span></h3><div class="constraint-body"><b>请补充：</b>未来几小时/几天不可随意调整？哪些角色可解冻？计划版本号、生效时间、变更原因、影响订单和签收回执如何保存？<div class="fill" contenteditable="true">冻结期、解冻权限、版本审计：____________________________</div></div></article>
+<article class="constraint-card"><h3>10 异常与重排策略<span>决定何时局部修复或全局重算</span></h3><div class="constraint-body"><b>请补充：</b>缺料、设备故障、质量异常、插单、返工、人员不足分别触发局部调整还是整体重排？影响最小化规则是什么？<div class="fill" contenteditable="true">触发阈值、重排范围、升级路径：__________________________</div></div></article>
+<article class="constraint-card"><h3>11 数据质量与系统权威<span>避免“垃圾进、垃圾出”</span></h3><div class="constraint-body"><b>请补充：</b>ERP、WMS、MES及人工表中，同一字段以谁为准？更新时间、完整率、准确率、对账方法、缺失值责任人和修正时限？<div class="fill" contenteditable="true">权威来源、更新时间、质量责任：__________________________</div></div></article>
+<article class="constraint-card"><h3>12 验证场景与验收指标<span>判断智能排产是否真正有效</span></h3><div class="constraint-body"><b>请补充：</b>选取哪1—3个月历史订单回放？比较人工与系统的准交率、计划达成率、换型时间、排程耗时、异常恢复时间及人工调整次数。<div class="fill" contenteditable="true">基线、目标值、样本范围、验收人：________________________</div></div></article>
+</div>
+
+<section class="footer"><div class="warn"><strong>必须另附的证据</strong>真实订单样例、BOM/工艺样例、齐套计算样例、排产表、报工记录、异常单各1份；敏感字段可脱敏。</div><div class="note"><strong>智能排产前置条件</strong>每条关键规则应写清：输入字段、判断公式、优先级、例外、审批人、输出及回流节点。</div><div class="rule"><strong>统一填写口径</strong>先写“目前实际怎么做”，再写“希望未来怎么做”；两者分开，避免把需求当成现状。</div></section>
+</main>
+<script>
+(()=>{
+  const VERSION='2.0';
+  const root=document.documentElement;
+  if(!root.dataset.instance) root.dataset.instance='master';
+  const storageKey=()=>`hs-scheduling-four-flow-v2:${root.dataset.instance}`;
+  const editable=()=>[...document.querySelectorAll('[contenteditable="true"]')];
+  const checks=()=>[...document.querySelectorAll('input[data-persist="check"]')];
+  const status=document.getElementById('saveStatus');
+  const saveTime=document.getElementById('saveTime');
+  let timer;
+
+  document.querySelectorAll('.checks').forEach((el,i)=>{
+    if(!el.querySelector('input[data-persist="check"]'))el.innerHTML=`<label><input type="checkbox" data-persist="check" data-check="${i}-current">现状已核对</label><label><input type="checkbox" data-persist="check" data-check="${i}-confirmed">部门已确认</label>`;
+  });
+  editable().forEach((el,i)=>{
+    if(!el.dataset.field) el.dataset.field=`field-${i+1}`;
+    if(!el.dataset.default) el.dataset.default=el.innerText;
+    el.setAttribute('role','textbox');
+    el.setAttribute('aria-multiline','true');
+  });
+
+  function collect(){
+    return {version:VERSION,savedAt:new Date().toISOString(),instance:root.dataset.instance,fields:Object.fromEntries(editable().map(el=>[el.dataset.field,el.innerText])),checks:Object.fromEntries(checks().map(el=>[el.dataset.check,el.checked]))};
+  }
+  function apply(data){
+    if(!data||!data.fields) throw new Error('不是有效的填报数据文件');
+    editable().forEach(el=>{if(Object.prototype.hasOwnProperty.call(data.fields,el.dataset.field)){el.innerText=data.fields[el.dataset.field];el.classList.add('is-edited')}});
+    checks().forEach(el=>{if(data.checks&&Object.prototype.hasOwnProperty.call(data.checks,el.dataset.check))el.checked=!!data.checks[el.dataset.check]});
+  }
+  function markSaved(iso){
+    const d=new Date(iso||Date.now());
+    status.innerHTML='状态：<strong>已保存到本机浏览器</strong>';
+    saveTime.textContent=`最后保存：${d.toLocaleString('zh-CN',{hour12:false})}`;
+  }
+  function save(){
+    const data=collect();
+    try{localStorage.setItem(storageKey(),JSON.stringify(data));markSaved(data.savedAt)}catch(e){status.innerHTML='状态：<strong style="color:#a84337">自动保存失败，请下载HTML或JSON</strong>'}
+    return data;
+  }
+  function scheduleSave(){
+    status.innerHTML='状态：<strong>正在编辑…</strong>';
+    clearTimeout(timer);timer=setTimeout(save,450);
+  }
+  function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
+  function dateStamp(){const d=new Date();return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`}
+
+  document.addEventListener('input',e=>{if(e.target.matches('[contenteditable="true"],input[data-persist="check"]')){if(e.target.matches('[contenteditable="true"]'))e.target.classList.add('is-edited');scheduleSave()}});
+  document.addEventListener('change',e=>{if(e.target.matches('input[data-persist="check"]'))scheduleSave()});
+  document.addEventListener('paste',e=>{const box=e.target.closest('[contenteditable="true"]');if(!box)return;e.preventDefault();document.execCommand('insertText',false,(e.clipboardData||window.clipboardData).getData('text/plain'))});
+  document.getElementById('saveNow').addEventListener('click',save);
+  document.getElementById('printPdf').addEventListener('click',()=>{save();window.print()});
+  document.getElementById('exportJson').addEventListener('click',()=>{const data=save();download(new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}),`浙江海顺订单排产填报_${dateStamp()}.json`)});
+  document.getElementById('downloadHtml').addEventListener('click',()=>{
+    save();
+    const clone=document.documentElement.cloneNode(true);
+    clone.dataset.instance=`filled-${Date.now()}`;
+    clone.querySelectorAll('input[type="checkbox"]').forEach((el,i)=>{const live=checks()[i];if(live&&live.checked)el.setAttribute('checked','checked');else el.removeAttribute('checked')});
+    const html='<!doctype html>\n'+clone.outerHTML;
+    download(new Blob([html],{type:'text/html;charset=utf-8'}),`浙江海顺订单排产四流与约束_已填写_${dateStamp()}.html`);
+  });
+  document.getElementById('importJson').addEventListener('change',async e=>{
+    const file=e.target.files&&e.target.files[0];if(!file)return;
+    try{const data=JSON.parse(await file.text());apply(data);save();alert('导入成功，请核对后再下载或打印。')}catch(err){alert(`导入失败：${err.message}`)}finally{e.target.value=''}
+  });
+  document.getElementById('clearAll').addEventListener('click',()=>{
+    if(!confirm('确定清空当前页面的全部填写内容和勾选状态吗？此操作无法撤销。'))return;
+    editable().forEach(el=>{el.innerText=el.dataset.default||'';el.classList.remove('is-edited')});checks().forEach(el=>el.checked=false);localStorage.removeItem(storageKey());status.innerHTML='状态：<strong>已清空</strong>';saveTime.textContent='尚未保存';
+  });
+  try{const saved=localStorage.getItem(storageKey());if(saved){const data=JSON.parse(saved);apply(data);markSaved(data.savedAt)}}catch(e){console.warn('本机保存数据读取失败',e)}
+  window.addEventListener('beforeunload',save);
+})();
+</script></body></html>
