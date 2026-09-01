@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自吸湿膜 · 客户匹配看板（三方向全扫）</title>
+<style>
+:root {
+  --bg: #f6f8fb;
+  --bg-grad-a: #eef2ff;
+  --bg-grad-b: #f6f8fb;
+  --surface: #ffffff;
+  --surface-2: #fafbfd;
+  --border: #e3e8ef;
+  --border-strong: #d3dae6;
+  --text: #0f1729;
+  --text-2: #475467;
+  --text-3: #8792a8;
+  --brand: #635bff;
+  --brand-soft: #eeeffe;
+  --cyan: #00a3c4;
+  --grade-a: #e0353b;
+  --grade-b: #f29100;
+  --grade-c: #635bff;
+  --grade-d: #8792a8;
+  --shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px -8px rgba(16,24,40,.10);
+  --shadow-lg: 0 2px 4px rgba(16,24,40,.04), 0 16px 40px -12px rgba(16,24,40,.16);
+}
+html[data-theme="dark"] {
+  --bg: #0b1020;
+  --bg-grad-a: #141a33;
+  --bg-grad-b: #0b1020;
+  --surface: #131a2e;
+  --surface-2: #18213a;
+  --border: #25304d;
+  --border-strong: #33405f;
+  --text: #e8ecf6;
+  --text-2: #a9b4cc;
+  --text-3: #6f7d9c;
+  --brand: #8b83ff;
+  --brand-soft: #1e2247;
+  --cyan: #38cfe8;
+  --grade-a: #ff6b70;
+  --grade-b: #ffb020;
+  --grade-c: #8b83ff;
+  --grade-d: #6f7d9c;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -8px rgba(0,0,0,.5);
+  --shadow-lg: 0 2px 4px rgba(0,0,0,.3), 0 16px 40px -12px rgba(0,0,0,.6);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
+  background: linear-gradient(160deg, var(--bg-grad-a) 0%, var(--bg-grad-b) 45%);
+  background-attachment: fixed;
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 64px;
+}
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+/* ---------- header ---------- */
+header {
+  padding: 48px 0 32px;
+  position: relative;
+}
+header::before {
+  content: "";
+  position: absolute; inset: -48px 0 0; z-index: -1;
+  background: radial-gradient(900px 320px at 15% -10%, rgba(99,91,255,.16), transparent 60%),
+              radial-gradient(700px 280px at 85% 0%, rgba(0,211,255,.12), transparent 60%);
+}
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--brand); background: var(--brand-soft);
+  padding: 5px 12px; border-radius: 999px; margin-bottom: 14px;
+}
+h1 { font-size: 32px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25; }
+.sub { color: var(--text-2); font-size: 15px; margin-top: 8px; }
+.header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+.theme-btn {
+  border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-2);
+  border-radius: 10px; padding: 8px 14px; font-size: 13px; cursor: pointer;
+  font-family: inherit; transition: all .18s ease; white-space: nowrap;
+}
+.theme-btn:hover { border-color: var(--brand); color: var(--brand); transform: translateY(-1px); }
+
+/* ---------- cards ---------- */
+.grid-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px; margin: 28px 0 8px;
+}
+.stat {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px 20px; box-shadow: var(--shadow); transition: all .2s ease; cursor: default;
+}
+.stat:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--border-strong); }
+.stat .label { font-size: 12px; color: var(--text-3); font-weight: 600; letter-spacing: .02em; }
+.stat .value { font-size: 30px; font-weight: 700; letter-spacing: -.02em; margin-top: 4px; }
+.stat .hint { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.stat.filterable { cursor: pointer; }
+.stat.filterable.active { border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
+
+section { margin-top: 40px; }
+.sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+h2 { font-size: 19px; font-weight: 660; letter-spacing: -.01em; }
+.sec-hint { font-size: 13px; color: var(--text-3); }
+
+.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 22px; box-shadow: var(--shadow);
+}
+.panel-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; }
+@media (max-width: 900px) { .panel-grid { grid-template-columns: 1fr; } }
+
+/* ---------- bars ---------- */
+.bar-row { margin-bottom: 13px; }
+.bar-top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+.bar-top .n { color: var(--text-3); font-variant-numeric: tabular-nums; }
+.bar-track { height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
+.bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--brand), var(--cyan)); transition: width .6s cubic-bezier(.2,.8,.2,1); }
+
+/* ---------- table ---------- */
+.tbl-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--surface); }
+thead th {
+  text-align: left; padding: 11px 14px; background: var(--surface-2);
+  font-weight: 620; color: var(--text-2); font-size: 12px; letter-spacing: .02em;
+  border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 2;
+}
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable:hover { color: var(--brand); }
+thead th .arrow { opacity: .35; font-size: 10px; margin-left: 3px; }
+thead th.sorted .arrow { opacity: 1; color: var(--brand); }
+tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tbody tr { transition: background .15s ease; }
+tbody tr:hover { background: var(--surface-2); }
+tbody tr:last-child td { border-bottom: none; }
+.co-name { font-weight: 620; color: var(--text); }
+.muted { color: var(--text-3); }
+.wrap-cell { max-width: 320px; white-space: normal; color: var(--text-2); }
+
+.badge {
+  display: inline-block; padding: 2px 9px; border-radius: 99px;
+  font-size: 11px; font-weight: 640; line-height: 1.7; white-space: nowrap;
+}
+.b-A { background: rgba(224,53,59,.11); color: var(--grade-a); }
+.b-B { background: rgba(242,145,0,.13); color: var(--grade-b); }
+.b-C { background: var(--brand-soft); color: var(--grade-c); }
+.b-D { background: rgba(135,146,168,.14); color: var(--grade-d); }
+.b-src { background: rgba(0,163,196,.11); color: var(--cyan); }
+.b-risk { background: rgba(224,53,59,.11); color: var(--grade-a); }
+.b-risk-m { background: rgba(242,145,0,.13); color: var(--grade-b); }
+.b-risk-l { background: rgba(22,163,74,.11); color: #16a34a; }
+.score { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ---------- matrix ---------- */
+.chart-box { position: relative; }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+.axis-line { stroke: var(--border-strong); stroke-width: 1; }
+.axis-label { fill: var(--text-3); font-size: 11px; }
+.grid-line { stroke: var(--border); stroke-width: 1; stroke-dasharray: 3 4; }
+.dot { transition: all .2s ease; cursor: pointer; }
+.dot:hover { stroke: var(--text); stroke-width: 2; }
+.tip {
+  position: absolute; pointer-events: none; opacity: 0; transform: translate(-50%, -140%);
+  background: var(--text); color: var(--bg); padding: 7px 11px; border-radius: 8px;
+  font-size: 12px; white-space: nowrap; transition: opacity .15s; z-index: 10; font-weight: 500;
+}
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 12px; color: var(--text-2); }
+.legend i { width: 9px; height: 9px; border-radius: 99px; display: inline-block; margin-right: 5px; }
+
+/* ---------- competitor ---------- */
+.comp-layer { margin-bottom: 18px; }
+.comp-layer:last-child { margin-bottom: 0; }
+.comp-title { font-size: 13px; font-weight: 640; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.comp-dot { width: 8px; height: 8px; border-radius: 99px; }
+.comp-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 1px solid var(--border-strong); background: var(--surface-2);
+  border-radius: 9px; padding: 7px 12px; font-size: 12.5px; color: var(--text-2);
+}
+.chip b { color: var(--text); font-weight: 620; }
+
+/* ---------- risk ---------- */
+.risk-item {
+  border-left: 3px solid var(--grade-b); padding: 10px 0 10px 14px; margin-bottom: 10px;
+  font-size: 13px; color: var(--text-2);
+}
+.risk-item:last-child { margin-bottom: 0; }
+.risk-item.high { border-color: var(--grade-a); }
+.risk-item strong { color: var(--text); }
+
+footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 12px; }
+.empty { color: var(--text-3); font-size: 13px; padding: 24px 0; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="header-row">
+      <div>
+        <div class="eyebrow">精准客户匹配看板</div>
+        <h1>自吸湿膜 · 客户匹配看板（三方向全扫）</h1>
+        <div class="sub">共 19 家候选客户 · A级 7 / B级 7 / C级 3 / D级 0 · 覆盖 14 个行业</div>
+      </div>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">切换深浅色</button>
+    </div>
+  </header>
+
+  <div class="grid-stats" id="stats"></div>
+
+  <section>
+    <div class="sec-head">
+      <h2>客户分布</h2>
+      <span class="sec-hint">按行业与角色层（终端 / 代工 / 渠道）</span>
+    </div>
+    <div class="panel-grid">
+      <div class="panel">
+        <div style="font-size:13px;font-weight:620;margin-bottom:14px">行业分布</div>
+        <div id="industryBars"></div>
+      </div>
+      <div class="panel">
+        <div style="font-size:13px;font-weight:620;margin-bottom:14px">角色层分布</div>
+        <div id="roleBars"></div>
+        <div style="font-size:13px;font-weight:620;margin:20px 0 14px">产品线分布</div>
+        <div id="productBars"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>匹配度矩阵</h2>
+      <span class="sec-hint">X = 需求强度 · Y = 付费能力 · 气泡大小 = 预估用量 · 颜色 = 分级</span>
+    </div>
+    <div class="panel chart-box">
+      <div id="matrix"></div>
+      <div class="legend">
+        <span><i style="background:var(--grade-a)"></i>A 级 · 立即攻</span>
+        <span><i style="background:var(--grade-b)"></i>B 级 · 培育</span>
+        <span><i style="background:var(--grade-c)"></i>C 级 · 观察</span>
+        <span><i style="background:var(--grade-d)"></i>D 级 · 放弃/转渠道</span>
+        <span class="muted">带 * 号 = 线索未验证</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="compSec">
+    <div class="sec-head">
+      <h2>竞品四层扫描</h2>
+      <span class="sec-hint">直接竞品 / 替代方案 / 潜在进入者 / 客户自制</span>
+    </div>
+    <div class="panel" id="competitors"></div>
+  </section>
+
+  <section id="scenSec">
+    <div class="sec-head">
+      <h2>场景覆盖</h2>
+      <span class="sec-hint">产品线 × 工序 × 痛点 —— 匹配引擎的推理依据</span>
+    </div>
+    <div class="panel" id="scenarios"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>客户清单</h2>
+      <span class="sec-hint">点击表头排序 · 点击上方概览卡按分级筛选</span>
+    </div>
+    <div class="tbl-wrap">
+      <table id="tbl">
+        <thead><tr id="theadRow"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>风险与待办提示</h2>
+      <span class="sec-hint">数据冲突 · 未验证线索 · 高风险客户</span>
+    </div>
+    <div class="panel" id="risks"></div>
+  </section>
+
+  <footer>
+    生成时间 2026-09-01 17:14 · 由 product-customer-matcher 生成 ·
+    数据文件 data/customers.csv · 本看板为离线快照，修改数据请重新生成
+  </footer>
+</div>
+
+<script>
+const DATA = {"customers": [{"id": "276", "公司名": "软包装复合加工厂", "行业": "软包装加工", "角色层": "代工", "产品线": "自吸湿膜", "应用场景": "吸湿冷铝复合/制袋", "需求强度": "", "付费能力": "", "可触达性": "", "切换意愿": "", "优势契合度": "", "匹配分": "", "分级": "", "主推型号": "", "预估用量": "", "来源": "泛化线索", "风险等级": "低", "决策链": "", "下一步动作": "", "更新时间": "", "source_type": "", "source_name": "", "source_ref": ""}, {"id": "277", "公司名": "防潮包装材料经销商", "行业": "包装材料流通", "角色层": "渠道", "产品线": "自吸湿膜", "应用场景": "防潮包装经销", "需求强度": "", "付费能力": "", "可触达性": "", "切换意愿": "", "优势契合度": "", "匹配分": "", "分级": "", "主推型号": "", "预估用量": "", "来源": "泛化线索", "风险等级": "低", "决策链": "", "下一步动作": "", "更新时间": "", "source_type": "", "source_name": "", "source_ref": ""}, {"id": "270", "公司名": "华海药业（原料药）", "行业": "医药（原料药）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "原料药转运内衬（桶/袋）", "需求强度": "5", "付费能力": "5", "可触达性": "5", "切换意愿": "3", "优势契合度": "5", "匹配分": "104", "分级": "A", "主推型号": "吸湿冷铝(绝干型)", "预估用量": "4", "来源": "已验证", "风险等级": "低", "决策链": "使用=泡罩/包装车间→技术=质量(QA)/研发→商务=包材采购→拍板=供应链/采购VP", "下一步动作": "专属方案+送样计划+高管拜访", "更新时间": "", "source_type": "", "source_name": "", "source_ref": ""}, {"id": "271", "公司名": "联邦制药（原料药）", "行业": "医药（原料药）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "原料药转运内衬（桶/袋）", "需求强度": "5", "付费能力": "5", "可触达性": "5", "切换意愿": "3", "优势契合度": "5", "匹配分": "104", "分级": "A", "主推型号": "吸湿冷铝(绝干型)", "预估用量": "4", "来源": "已验证", "风险等级": "低", "决策链": "使用=泡罩/包装车间→技术=质量(QA)/研发→商务=包材采购→拍板=供应链/采购VP", "下一步动作": "专属方案+送样计划+高管拜访", "更新时间": "", "source_type": "", "source_name": "", "source_ref": ""}, {"id": "272", "公司名": "石药集团（原料药）", "行业": "医药（原料药）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "原料药转运内衬（桶/袋）", "需求强度": "5", "付费能力": "5", "可触达性": "3", "切换意愿": "3", "优势契合度": "5", "匹配分": "96", "分级": "A", "主推型号": "吸湿冷铝(绝干型)", "预估用量": "4", "来源": "已验证", "风险等级": "低", "决策链": "使用=泡罩/包装车间→技术=质量(QA)/研发→商务=包材采购→拍板=供应链/采购VP", "下一步动作": "专属方案+送样计划+高管拜访", "更新时间": "", "source_type": "", "source_name": "", "source_ref": ""}, {"id": "273", "公司名": "九州通（医药流通）", "行业": "医药流通", "角色层": "渠道", "产品线": "自吸湿膜", "应用场景": "高湿敏感药品防潮包装", "需求强度": "3", "付费能力": "5", "可触达性": "4", "切换意愿": "3", "优势契合度": "3", "匹配分": "72", "分级": "B", "主推型号": "吸湿冷铝(调湿型)", "预估用量": "3", "来源": "已验证", "风险等级": "低", "决策链": "使用=下游终端客户(药企/食品厂包装车间)→技术=技术服务→商务=采购部→拍板=总经理", "下一步动作": "定期触达+等需求窗口+寄样", "更新时间": "", "source_type": "", "source_name": "", "source_ref": ""}, {"id": "274", "公司名": "立讯精密", "行业": "电子", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "电子元器件防潮封装（高温高湿测试）", "需求强度": "2", "付费能力": "5", "可触达性": "2", "切换意愿": "2", "优势契合度": "2", "匹配分": "52*", "分级": "C", "主推型号": "吸湿冷铝(绝干型)", "预估用量": "2", "来源": "存疑（电子组装/零组件厂，防潮包装非核心采购工序，建议转IC/元器件原厂）", "风险等级": "中", "决策链": "使用=泡罩/包装车间→技术=质量(QA)/研发→商务=包材采购→拍板=供应链/采购VP", "下一步动作": "纳入情报跟踪名单", "更新时间": "", "source_type": "", "source_name": "", "source_ref": ""}, {"id": "275", "公司名": "歌尔股份", "行业": "电子", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "电子元器件防潮封装（高温高湿测试）", "需求强度": "2", "付费能力": "5", "可触达性": "2", "切换意愿": "2", "优势契合度": "2", "匹配分": "52*", "分级": "C", "主推型号": "吸湿冷铝(绝干型)", "预估用量": "2", "来源": "存疑（电子组装/零组件厂，防潮包装非核心采购工序，建议转IC/元器件原厂）", "风险等级": "中", "决策链": "使用=泡罩/包装车间→技术=质量(QA)/研发→商务=包材采购→拍板=供应链/采购VP", "下一步动作": "纳入情报跟踪名单", "更新时间": "", "source_type": "", "source_name": "", "source_ref": ""}, {"id": "312", "公司名": "长电科技", "行业": "电子（集成电路封测）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "芯片封装出货防潮包装（MSL湿敏等级管理）", "需求强度": "5", "付费能力": "5", "可触达性": "4", "切换意愿": "3", "优势契合度": "4", "匹配分": "97", "分级": "A", "主推型号": "吸湿冷铝(绝干型+铝箔ESD屏蔽)", "预估用量": "5", "来源": "已验证", "风险等级": "低", "决策链": "使用=封装出货包装工位→技术=质量(QA)/封装工程(MSL管理)→商务=辅材耗材采购→拍板=供应链总监/采购VP", "下一步动作": "专属方案+送样(过J-STD-020高温高湿测试)+高管拜访", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "长电科技(600584)", "source_ref": "封测龙头，防潮铝箔袋典型客户"}, {"id": "313", "公司名": "通富微电", "行业": "电子（集成电路封测）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "芯片封装出货防潮包装（MSL湿敏等级管理）", "需求强度": "5", "付费能力": "5", "可触达性": "4", "切换意愿": "3", "优势契合度": "4", "匹配分": "97", "分级": "A", "主推型号": "吸湿冷铝(绝干型+铝箔ESD屏蔽)", "预估用量": "5", "来源": "已验证", "风险等级": "低", "决策链": "使用=封装出货包装工位→技术=质量(QA)/封装工程(MSL管理)→商务=辅材耗材采购→拍板=供应链总监/采购VP", "下一步动作": "专属方案+送样(过J-STD-020高温高湿测试)+高管拜访", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "通富微电(002156)", "source_ref": "2025营收279亿，全球OSAT前六"}, {"id": "314", "公司名": "华天科技", "行业": "电子（集成电路封测）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "芯片封装出货防潮包装（MSL湿敏等级管理）", "需求强度": "5", "付费能力": "4", "可触达性": "4", "切换意愿": "3", "优势契合度": "4", "匹配分": "93", "分级": "A", "主推型号": "吸湿冷铝(绝干型+铝箔ESD屏蔽)", "预估用量": "4", "来源": "已验证", "风险等级": "低", "决策链": "使用=封装出货包装工位→技术=质量(QA)/封装工程(MSL管理)→商务=辅材耗材采购→拍板=供应链总监/采购VP", "下一步动作": "专属方案+送样(过J-STD-020高温高湿测试)+高管拜访", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "华天科技(002185)", "source_ref": "2024营收145亿，全球OSAT前十，毛利偏低价格较敏感"}, {"id": "315", "公司名": "风华高科", "行业": "电子（被动元件/MLCC）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "MLCC/片式元件编带卷盘出货防潮包装", "需求强度": "4", "付费能力": "4", "可触达性": "4", "切换意愿": "3", "优势契合度": "4", "匹配分": "77", "分级": "B", "主推型号": "吸湿冷铝(绝干型)", "预估用量": "3", "来源": "已验证", "风险等级": "中", "决策链": "使用=元件包装车间(编带/卷盘)→技术=质量(QA)/可靠性实验室→商务=采购部→拍板=供应链/采购负责人", "下一步动作": "定期触达+寄样+等需求窗口", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "风华高科(000636)", "source_ref": "MLCC储存条件明确RH20-70%，防潮需求刚性；历史有商誉减值记录"}, {"id": "316", "公司名": "三环集团", "行业": "电子（陶瓷元件/MLCC）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "MLCC/陶瓷元件出货防潮包装", "需求强度": "4", "付费能力": "4", "可触达性": "3", "切换意愿": "3", "优势契合度": "4", "匹配分": "73", "分级": "B", "主推型号": "吸湿冷铝(绝干型)", "预估用量": "3", "来源": "已验证", "风险等级": "低", "决策链": "使用=元件包装车间→技术=质量(QA)/可靠性实验室→商务=采购部→拍板=供应链/采购负责人", "下一步动作": "定期触达+寄样+等需求窗口", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "三环集团(300408)", "source_ref": "2024营收73.75亿，净利率约30%，MLCC高可靠度高毛利"}, {"id": "317", "公司名": "双汇发展", "行业": "食品（肉类加工）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "冷鲜肉/低温肉制品气调包装内吸湿（替代吸水垫）", "需求强度": "4", "付费能力": "5", "可触达性": "3", "切换意愿": "3", "优势契合度": "4", "匹配分": "77", "分级": "B", "主推型号": "吸湿膜(调湿型RH20-30%)", "预估用量": "4", "来源": "已验证", "风险等级": "低", "决策链": "使用=肉制品包装车间→技术=化工包装事业部/研发→商务=包装材料采购→拍板=采购VP", "下一步动作": "定期触达+寄样+算总拥有成本账（对标吸水垫/干燥剂）", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "双汇发展(000895)", "source_ref": "肉类加工龙头，自建PVDC包装事业部，包装专业度高"}, {"id": "318", "公司名": "三只松鼠", "行业": "食品（坚果/休闲食品）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "每日坚果/混合坚果包装内调湿（解决果干→坚果水分迁移）", "需求强度": "4", "付费能力": "4", "可触达性": "4", "切换意愿": "4", "优势契合度": "4", "匹配分": "80", "分级": "A", "主推型号": "吸湿膜(调湿型RH20-30%)", "预估用量": "3", "来源": "已验证", "风险等级": "低", "决策链": "使用=充氮包装车间→技术=质量(QA)/研发(保鲜技术)→商务=包材采购→拍板=供应链/采购负责人", "下一步动作": "专属方案+送样（针对脱氧剂误食事件痛点，主打一体化免误食）", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "三只松鼠(300783)", "source_ref": "2022脱氧剂泄漏孕妇误食事件，切换意愿强"}, {"id": "319", "公司名": "洽洽食品", "行业": "食品（坚果炒货）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "坚果炒货四层包装内调湿（替代干燥剂包）", "需求强度": "4", "付费能力": "4", "可触达性": "4", "切换意愿": "3", "优势契合度": "4", "匹配分": "77", "分级": "B", "主推型号": "吸湿膜(调湿型RH20-30%)", "预估用量": "3", "来源": "已验证", "风险等级": "低", "决策链": "使用=充氮包装车间→技术=质量(QA)/研发(关键保鲜技术)→商务=包材采购→拍板=供应链/采购负责人", "下一步动作": "定期触达+寄样+等需求窗口", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "洽洽食品(002557)", "source_ref": "现用吸氧剂+干燥剂双投，水分迁移痛点明确"}, {"id": "320", "公司名": "桃李面包", "行业": "食品（烘焙）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "短保面包/糕点包装内防潮保鲜", "需求强度": "3", "付费能力": "4", "可触达性": "4", "切换意愿": "3", "优势契合度": "3", "匹配分": "68", "分级": "B", "主推型号": "吸湿膜(调湿型RH20-30%)", "预估用量": "2", "来源": "已验证", "风险等级": "低", "决策链": "使用=烘焙包装车间→技术=质量(QA)→商务=包材采购→拍板=采购负责人", "下一步动作": "定期触达+寄样（短保靠冷链周转，防潮为次级需求）", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "桃李面包(603866)", "source_ref": "短保烘焙龙头，主靠冷链+气调，防潮需求中等"}, {"id": "321", "公司名": "达利食品", "行业": "食品（烘焙/饼干）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "曲奇/饼干/糕点包装内防潮", "需求强度": "4", "付费能力": "5", "可触达性": "3", "切换意愿": "3", "优势契合度": "4", "匹配分": "77", "分级": "B", "主推型号": "吸湿膜(调湿型RH20-30%)", "预估用量": "3", "来源": "已验证", "风险等级": "低", "决策链": "使用=烘焙包装车间→技术=质量(QA)/研发→商务=包材采购→拍板=采购负责人", "下一步动作": "定期触达+寄样+算总拥有成本账", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "达利食品集团", "source_ref": "烘焙/曲奇巨头（港股退市私有化），吸潮变软为核心品质痛点"}, {"id": "322", "公司名": "国联水产", "行业": "食品（水产/预制菜）", "角色层": "终端", "产品线": "自吸湿膜", "应用场景": "水产/预制菜包装内吸湿（替代吸水垫）", "需求强度": "3", "付费能力": "2", "可触达性": "3", "切换意愿": "3", "优势契合度": "3", "匹配分": "56", "分级": "C", "主推型号": "吸湿膜(调湿型RH20-30%)", "预估用量": "2", "来源": "已验证", "风险等级": "高", "决策链": "使用=水产/预制菜包装车间→技术=质量(QA)→商务=包材采购→拍板=采购负责人", "下一步动作": "纳入情报跟踪名单，成交前需资信审查（财务高风险）", "更新时间": "2026-09-01", "source_type": "联网验证", "source_name": "国联水产(300094)", "source_ref": "净资产仅0.95亿、连亏6年、2025巨亏16.31亿、退市风险+财务违规历史"}], "competitors": [{"名称": "东洋铝业（Toyal Dry）", "层级": "直接竞品", "产品线": "自吸湿膜", "我方相对位置": "跟随/本地化反超", "威胁等级": "高", "优势": "吸湿膜国际先行者，技术成熟，CPHI等展会影响力", "劣势": "进口成本高、本地化响应慢", "定价参考": "进口吸湿膜溢价（未获取精确值）", "防守动作": "海顺吸湿冷铝本地化+成本+医药渠道优势，主打替代进口", "source_type": "", "source_name": "", "source_ref": ""}, {"名称": "希悦尔（Sealed Air）", "层级": "直接竞品", "产品线": "自吸湿膜", "我方相对位置": "跟随", "威胁等级": "中", "优势": "全球主动包装巨头，品牌与渠道", "劣势": "非医药主业，本地吸湿定制弱", "定价参考": "未获取", "防守动作": "聚焦医药/原料药细分的本地化定制服务", "source_type": "", "source_name": "", "source_ref": ""}, {"名称": "传统干燥剂包（硅胶/分子筛/脱氧剂）", "层级": "替代方案", "产品线": "自吸湿膜", "我方相对位置": "替代旧方案", "威胁等级": "高", "优势": "成本低、成熟、客户习惯", "劣势": "误食风险、需除粉尘、增加工序、体积大", "定价参考": "干燥剂包单价极低但综合工序成本高（未获取精确值）", "防守动作": "以一体化免误食+省工序+自动化适配+吸湿冷铝差异化，算总拥有成本账", "source_type": "", "source_name": "", "source_ref": ""}, {"名称": "吸湿剂母粒厂（延伸制膜）", "层级": "潜在进入者", "产品线": "自吸湿膜", "我方相对位置": "专利+医药认证护城河", "威胁等级": "低", "优势": "掌握CaO/分子筛母粒分散技术", "劣势": "缺医药包装资质与铝塑复合工艺", "定价参考": "未获取", "防守动作": "以专利结构+药用级认证+客户验证周期筑墙", "source_type": "", "source_name": "", "source_ref": ""}, {"名称": "原料药大厂自制干燥方案", "层级": "客户自制", "产品线": "自吸湿膜", "我方相对位置": "专业一体化领先", "威胁等级": "中", "优势": "需求明确", "劣势": "吸湿膜配方/控湿工艺专业性强，非主业", "定价参考": "未获取", "防守动作": "以海顺吸湿冷铝专业一体化+吸湿容量15%-40%技术参数打动", "source_type": "", "source_name": "", "source_ref": ""}, {"名称": "四川汇利实业", "层级": "直接竞品", "产品线": "自吸湿膜", "我方相对位置": "正面竞争（吸湿膜层+冷铝/复合结构占位）", "威胁等级": "高", "优势": "主业药包材(硬片/冷铝/复合膜)，PE吸湿膜专利CN117304594A(2023-11在审)，直接占位吸湿冷铝结构", "劣势": "专利在审未授权，吸湿容量/速率调节能力未验证", "定价参考": "未获取", "防守动作": "海顺药用级认证+已量产吸湿冷铝先发，抢授权窗口期铺客户", "source_type": "R8侦察", "source_name": "四川汇利实业", "source_ref": "专利CN117304594A"}, {"名称": "东莞世皓新材料", "层级": "直接竞品", "产品线": "自吸湿膜", "我方相对位置": "正面竞争", "威胁等级": "中", "优势": "吸湿防潮塑料膜专利CN219544223U(2023-08已授权)，基膜+透气膜+吸附剂夹层结构", "劣势": "授权实用新型，层结构较简单，无铝箔阻隔层", "定价参考": "未获取", "防守动作": "以铝箔阻隔+吸湿容量15-40%技术参数区隔", "source_type": "R8侦察", "source_name": "东莞世皓新材料", "source_ref": "专利CN219544223U"}, {"名称": "义乌康顺包装", "层级": "直接竞品", "产品线": "自吸湿膜", "我方相对位置": "正面竞争", "威胁等级": "中", "优势": "PE缠绕膜/预涂膜厂，与世皓联合持有吸湿膜专利", "劣势": "非药包材主业，无药用级认证，产能工艺偏通用膜", "定价参考": "未获取", "防守动作": "以医药认证+药用级原料(食品级/药用级PE)筑墙", "source_type": "R8侦察", "source_name": "义乌康顺包装", "source_ref": "与世皓联合专利"}, {"名称": "长春中科应化", "层级": "直接竞品", "产品线": "自吸湿膜", "我方相对位置": "技术储备型，暂不构成现实威胁", "威胁等级": "低", "优势": "复合型吸湿薄膜专利CN103194000A(2013)，硅溶胶浸渍复合，技术储备早", "劣势": "专利老旧，商业化未获取", "定价参考": "未获取", "防守动作": "持续监测其产业化动向", "source_type": "R8侦察", "source_name": "长春中科应化", "source_ref": "专利CN103194000A"}, {"名称": "上海衡元高分子", "层级": "替代方案", "产品线": "自吸湿膜", "我方相对位置": "形态区隔（片/板 vs 膜）", "威胁等级": "中", "优势": "纤维调湿片/调湿板，双向调湿RH30-80%，形态成熟", "劣势": "片/板形态，无法一体化集成于包装膜，自动化适配差", "定价参考": "未获取", "防守动作": "以膜内封装+自动化一体化替代片/板投放工序", "source_type": "R8侦察", "source_name": "上海衡元高分子", "source_ref": "纤维调湿片/板"}, {"名称": "福建华赢科技", "层级": "替代方案", "产品线": "自吸湿膜", "我方相对位置": "形态区隔（包/片 vs 膜）", "威胁等级": "中", "优势": "食品干燥剂/调湿片/保湿包/脱氧剂，食品渠道成熟", "劣势": "包/片形态，误食风险+需投放工序", "定价参考": "未获取", "防守动作": "以一体化免误食+省工序打动食品客户", "source_type": "R8侦察", "source_name": "福建华赢科技", "source_ref": "食品干燥剂/调湿片"}, {"名称": "青岛凯佳包装", "层级": "替代方案", "产品线": "自吸湿膜", "我方相对位置": "形态区隔（吸水垫 vs 膜）", "威胁等级": "中", "优势": "食品托盘吸水垫/吸水纸(海鲜牛肉吸血垫)，肉类渠道成熟", "劣势": "垫状形态，与包装膜分离，非一体化", "定价参考": "未获取", "防守动作": "以托盘吸湿膜一体化替代独立吸水垫", "source_type": "R8侦察", "source_name": "青岛凯佳包装", "source_ref": "托盘吸水垫/吸水纸"}, {"名称": "衡水杰彩塑料包装", "层级": "替代方案", "产品线": "自吸湿膜", "我方相对位置": "医用为主，非直接同层", "威胁等级": "低", "优势": "吸潮/吸湿包装袋(透析纸+复合膜)，医用为主", "劣势": "以袋为主，非连续膜卷，自动化适配弱", "定价参考": "未获取", "防守动作": "以膜卷连续生产+铝箔结构区隔", "source_type": "R8侦察", "source_name": "衡水杰彩塑料包装", "source_ref": "吸潮吸湿包装袋"}, {"名称": "广东彩龙新材料", "层级": "替代方案", "产品线": "自吸湿膜", "我方相对位置": "被动阻隔 vs 主动吸湿（同客户预算竞争）", "威胁等级": "低", "优势": "镀铝膜/氧化铝高阻隔膜(被动防潮)，客户重叠", "劣势": "仅被动阻隔，无法主动吸收内部水汽", "定价参考": "未获取", "防守动作": "以主动吸湿+阻隔一体区隔，算总拥有成本", "source_type": "R8侦察", "source_name": "广东彩龙新材料", "source_ref": "镀铝/氧化铝高阻隔膜"}, {"名称": "广东宝德利新材料", "层级": "潜在进入者", "产品线": "自吸湿膜", "我方相对位置": "跨界（PVA水溶膜→吸湿聚合物膜）", "威胁等级": "低", "优势": "水溶性PVA膜(洗衣凝珠/农药)，被QYResearch归入吸湿聚合物薄膜厂商，聚合物加工能力强", "劣势": "PVA水溶膜与吸湿膜功能不同，跨界需重新研发配方", "定价参考": "未获取", "防守动作": "监测其是否切入吸湿膜赛道", "source_type": "R8侦察", "source_name": "广东宝德利新材料(833367)", "source_ref": "QYResearch归类吸湿聚合物薄膜"}, {"名称": "食品厂沿用干燥剂包/吸水垫自制方案", "层级": "客户自制", "产品线": "自吸湿膜", "我方相对位置": "专业一体化领先", "威胁等级": "中", "优势": "食品厂现有干燥剂包/吸水垫方案成熟、成本低、习惯沿用", "劣势": "误食风险、需投放工序、非一体化、货架期保护有限", "定价参考": "未获取", "防守动作": "以一体化免误食+省工序+货架期延长打动，算总拥有成本账", "source_type": "R8侦察", "source_name": "食品厂", "source_ref": "食品方向客户自制层补齐"}], "scenarios": [{"id": "43", "产品线": "自吸湿膜", "行业": "医药", "工序": "药品包装干燥剂投放替代", "被加工对象": "高湿敏感药品袋/泡罩", "痛点": "干燥剂包误食风险、需除粉尘、增加人工工序", "对应优势": "吸湿剂封装于膜层内，一体化免干燥剂包", "价值量化点": "省去除尘工序+避免误食+自动化适配", "来源": "知识图谱", "更新时间": "2026-09-01"}, {"id": "44", "产品线": "自吸湿膜", "行业": "医药（原料药）", "工序": "原料药转运内衬（桶/袋）", "被加工对象": "API原料药", "痛点": "API吸潮结块/降解", "对应优势": "铝箔阻隔+吸湿剂，吸湿容量自重15%-40%", "价值量化点": "绝干型目标RH→0%，保证原料药干燥", "来源": "知识图谱", "更新时间": "2026-09-01"}, {"id": "45", "产品线": "自吸湿膜", "行业": "电子", "工序": "电子元器件防潮封装（高温高湿测试）", "被加工对象": "高端电子元件/PCB", "痛点": "水汽导致元件氧化/失效", "对应优势": "吸湿+铝箔阻隔一体", "价值量化点": "通过高温高湿测试，降低客诉", "来源": "知识图谱", "更新时间": "2026-09-01"}, {"id": "58", "产品线": "自吸湿膜", "行业": "食品（肉类/水产）", "工序": "生鲜托盘/气调包装内吸湿（替代吸水垫）", "被加工对象": "冷鲜肉、水产（托盘/气调盒装）", "痛点": "血水汁液渗出致货架期缩短、菌落滋生、外观差", "对应优势": "吸湿剂封装于膜层内，一体化吸湿免吸水垫，无粉尘污染", "价值量化点": "延长货架期+省吸水垫工序+自动化适配", "来源": "知识图谱+推理", "更新时间": "2026-09-01"}, {"id": "59", "产品线": "自吸湿膜", "行业": "食品（干货/坚果）", "工序": "干货/坚果/菌菇包装内调湿（替代干燥剂包）", "被加工对象": "坚果、果干、菌菇、茶叶等干货", "痛点": "吸潮回软/霉变、干燥剂包误食风险", "对应优势": "调湿型目标RH20-30%，吸湿剂封装膜内不与内容物接触", "价值量化点": "保持酥脆+避免误食+省干燥剂投放工序", "来源": "知识图谱+推理", "更新时间": "2026-09-01"}, {"id": "60", "产品线": "自吸湿膜", "行业": "食品（烘焙）", "工序": "烘焙糕点/曲奇/蛋卷包装内防潮", "被加工对象": "曲奇、饼干、蛋卷、糕点", "痛点": "吸潮变软失脆、货架期缩短", "对应优势": "调湿型吸湿+铝箔层阻隔外界水汽", "价值量化点": "保持酥脆口感+延长货架期", "来源": "知识图谱+推理", "更新时间": "2026-09-01"}]};
+const META = {"risks": ["> 本文件每行一条，会自动显示在看板的「风险与待办提示」区块。", "> 以 `#` 开头的行为注释，不会显示。", "> 建议每条标注归属的产品线，避免跨产品线分析时误报。", "【自吸湿膜】国联水产(300094)高风险：净资产仅0.95亿、连亏6年、2025年巨亏16.31亿、退市风险(*ST)+历史财务违规，已列C级观察，成交前必须资信审查。", "【自吸湿膜】电子方向：海顺\"药用级\"认证不直接覆盖电子级要求，切入长电/通富/华天前需补电子级高温高湿(J-STD-020)+ESD+低析出测试验证。", "【自吸湿膜】食品方向：吸湿膜仅解决\"吸潮\"，坚果类主痛点为\"氧化哈败\"需配合脱氧剂，切入话术需区分（三只松鼠/洽洽需吸潮+脱氧组合方案）。", "【自吸湿膜】双汇发展自建化工包装事业部(PVDC全球最大基地)，属\"客户自制\"信号，切入难度高，建议作战略标杆客户而非快速成交客户。", "【自吸湿膜】预估用量字段为 1-5 用量潜力评级（5=巨大），精确年用量(吨)需客户侧环评产线数+指挥员单件耗材系数补充，暂未测算，禁止拍脑袋填吨位。"]};
+
+/* ---------- theme ---------- */
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = cur === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('pcm-theme', next); } catch (e) {}
+  drawMatrix();
+}
+try {
+  const t = localStorage.getItem('pcm-theme');
+  if (t) document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+
+/* ---------- helpers ---------- */
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num = v => { const n = parseFloat(String(v == null ? '' : v).replace(/[^\d.\-]/g, '')); return isNaN(n) ? 0 : n; };
+const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+function groupCount(rows, field) {
+  const m = {};
+  rows.forEach(r => { const k = (r[field] || '未分类').trim() || '未分类'; m[k] = (m[k] || 0) + 1; });
+  return Object.entries(m).sort((a, b) => b[1] - a[1]);
+}
+
+function renderBars(elId, pairs) {
+  const el = document.getElementById(elId);
+  if (!pairs.length) { el.innerHTML = '<div class="empty">暂无数据</div>'; return; }
+  const max = Math.max(...pairs.map(p => p[1]));
+  el.innerHTML = pairs.map(([k, v]) => `
+    <div class="bar-row">
+      <div class="bar-top"><span>${esc(k)}</span><span class="n">${v}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.max(4, v / max * 100)}%"></div></div>
+    </div>`).join('');
+}
+
+/* ---------- stats ---------- */
+let activeGrade = null;
+function renderStats() {
+  const rows = DATA.customers || [];
+  const grades = { A: 0, B: 0, C: 0, D: 0 };
+  rows.forEach(r => { if (grades[r['分级']] !== undefined) grades[r['分级']]++; });
+  const verified = rows.filter(r => (r['来源'] || '').includes('已验证')).length;
+  const industries = new Set(rows.map(r => r['行业']).filter(Boolean)).size;
+  const items = [
+    { label: '候选客户总数', value: rows.length, hint: '已进入客户库' },
+    { label: 'A 级 · 立即攻', value: grades.A, hint: '匹配分 ≥ 80', grade: 'A' },
+    { label: 'B 级 · 培育', value: grades.B, hint: '匹配分 60–79', grade: 'B' },
+    { label: 'C 级 · 观察', value: grades.C, hint: '匹配分 40–59', grade: 'C' },
+    { label: '已验证线索', value: verified, hint: '联网核实过' },
+    { label: '覆盖行业', value: industries, hint: '个细分行业' },
+  ];
+  document.getElementById('stats').innerHTML = items.map(i => `
+    <div class="stat ${i.grade ? 'filterable' : ''}" ${i.grade ? `data-grade="${i.grade}"` : ''}>
+      <div class="label">${i.label}</div>
+      <div class="value" style="${i.grade ? `color:var(--grade-${i.grade.toLowerCase()})` : ''}">${i.value}</div>
+      <div class="hint">${i.hint}</div>
+    </div>`).join('');
+  document.querySelectorAll('.stat.filterable').forEach(el => {
+    el.onclick = () => {
+      const g = el.dataset.grade;
+      activeGrade = (activeGrade === g) ? null : g;
+      document.querySelectorAll('.stat.filterable').forEach(x =>
+        x.classList.toggle('active', x.dataset.grade === activeGrade));
+      renderTable();
+      drawMatrix();
+    };
+  });
+}
+
+/* ---------- matrix ---------- */
+function drawMatrix() {
+  const box = document.getElementById('matrix');
+  let rows = (DATA.customers || []).filter(r => num(r['需求强度']) > 0 && num(r['付费能力']) > 0);
+  if (activeGrade) rows = rows.filter(r => r['分级'] === activeGrade);
+  if (!rows.length) { box.innerHTML = '<div class="empty">暂无可绘制的数据（需填写需求强度与付费能力）</div>'; return; }
+
+  const W = 720, H = 380, PAD = { l: 52, r: 24, t: 24, b: 48 };
+  const iw = W - PAD.l - PAD.r, ih = H - PAD.t - PAD.b;
+  const x = v => PAD.l + (v - 0.5) / 5 * iw;
+  const y = v => PAD.t + ih - (v - 0.5) / 5 * ih;
+  const maxVol = Math.max(...rows.map(r => num(r['预估用量'])), 1);
+  const r = v => 6 + Math.sqrt(num(v) / maxVol) * 20;
+
+  let g = '';
+  for (let i = 1; i <= 5; i++) {
+    g += `<line class="grid-line" x1="${x(i)}" y1="${PAD.t}" x2="${x(i)}" y2="${PAD.t + ih}"/>`;
+    g += `<line class="grid-line" x1="${PAD.l}" y1="${y(i)}" x2="${PAD.l + iw}" y2="${y(i)}"/>`;
+    g += `<text class="axis-label" x="${x(i)}" y="${PAD.t + ih + 20}" text-anchor="middle">${i}</text>`;
+    g += `<text class="axis-label" x="${PAD.l - 12}" y="${y(i) + 4}" text-anchor="end">${i}</text>`;
+  }
+  g += `<line class="axis-line" x1="${PAD.l}" y1="${PAD.t + ih}" x2="${PAD.l + iw}" y2="${PAD.t + ih}"/>`;
+  g += `<line class="axis-line" x1="${PAD.l}" y1="${PAD.t}" x2="${PAD.l}" y2="${PAD.t + ih}"/>`;
+  g += `<text class="axis-label" x="${PAD.l + iw / 2}" y="${H - 6}" text-anchor="middle">需求强度 →</text>`;
+  g += `<text class="axis-label" transform="translate(14,${PAD.t + ih / 2}) rotate(-90)" text-anchor="middle">付费能力 →</text>`;
+
+  // 按坐标聚簇:同分客户横向错位排布、标签上下交替错高,避免气泡与标签重叠
+  const clusters = {};
+  rows.forEach((row, i) => {
+    const k = num(row['需求强度']) + '|' + num(row['付费能力']);
+    (clusters[k] = clusters[k] || []).push(i);
+  });
+  Object.values(clusters).forEach(idxs => {
+    const n = idxs.length;
+    // 匹配分最高者排中间
+    idxs.sort((a, b) => num(rows[b]['匹配分']) - num(rows[a]['匹配分']));
+    const step = Math.min(30, Math.max(16, 120 / n));   // 簇内相邻间距(px)
+    idxs.forEach((i, j) => {
+      const row = rows[i];
+      const baseX = x(num(row['需求强度'])), baseY = y(num(row['付费能力']));
+      const off = n > 1 ? (j - (n - 1) / 2) * step : 0;
+      let rad = r(row['预估用量']);
+      if (n > 1) rad = Math.max(5, Math.min(rad, step / 2 - 1));   // 簇内压缩半径防叠压
+      const cx = baseX + off, cy = baseY;
+      const grade = (row['分级'] || 'D');
+      const col = cssVar(`--grade-${grade.toLowerCase()}`) || '#8792a8';
+      g += `<circle class="dot" data-i="${i}" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}"
+              r="${rad.toFixed(1)}" fill="${col}" fill-opacity="0.55"
+              stroke="${col}" stroke-width="1.5"/>`;
+      // 标签上下交替:j 偶数在上、奇数在下,同侧再逐级抬高
+      const above = j % 2 === 0;
+      const tier = Math.floor(j / 2);
+      const ly = above ? cy - rad - 6 - tier * 12 : cy + rad + 14 + tier * 12;
+      g += `<text x="${cx.toFixed(1)}" y="${ly.toFixed(1)}"
+              text-anchor="middle" style="font-size:10px;fill:var(--text-2)">${esc((row['公司名'] || '').slice(0, 8))}</text>`;
+    });
+  });
+
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}">${g}</svg>
+    <div class="tip" id="tip"></div>`;
+
+  const tip = document.getElementById('tip');
+  box.querySelectorAll('.dot').forEach(d => {
+    d.addEventListener('mouseenter', e => {
+      const row = rows[+d.dataset.i];
+      tip.textContent = `${row['公司名']} · ${row['分级']}级 ${row['匹配分']}分 · 预估 ${row['预估用量'] || '未测算'}`;
+      tip.style.opacity = 1;
+      tip.style.left = e.offsetX + 'px';
+      tip.style.top = e.offsetY + 'px';
+    });
+    d.addEventListener('mouseleave', () => { tip.style.opacity = 0; });
+  });
+}
+
+/* ---------- competitors ---------- */
+function renderCompetitors() {
+  const comps = DATA.competitors || [];
+  const el = document.getElementById('competitors');
+  if (!comps.length) {
+    document.getElementById('compSec').style.display = 'none';
+    return;
+  }
+  const layerMeta = {
+    '直接竞品': { color: 'var(--grade-a)', desc: '同品类同应用，正面竞争' },
+    '替代方案': { color: 'var(--grade-b)', desc: '不同技术路线解同一问题' },
+    '潜在进入者': { color: 'var(--grade-c)', desc: '跨界玩家正在进来' },
+    '客户自制': { color: 'var(--grade-d)', desc: '客户干脆不用你的方案' },
+  };
+  const layers = {};
+  comps.forEach(c => {
+    const k = (c['层级'] || '未分类').trim();
+    (layers[k] = layers[k] || []).push(c);
+  });
+  el.innerHTML = Object.entries(layers).map(([k, list]) => {
+    const m = layerMeta[k] || { color: 'var(--grade-d)', desc: '' };
+    return `<div class="comp-layer">
+      <div class="comp-title"><span class="comp-dot" style="background:${m.color}"></span>${esc(k)}
+        <span class="muted" style="font-weight:400">· ${m.desc}</span></div>
+      <div class="comp-list">${list.map(c =>
+        `<span class="chip"><b>${esc(c['名称'] || c['公司名'] || '')}</b>${
+          c['我方相对位置'] ? ' · ' + esc(c['我方相对位置']) : ''}${
+          c['威胁等级'] ? ' · 威胁' + esc(c['威胁等级']) : ''}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderScenarios() {
+  const scens = DATA.scenarios || [];
+  const el = document.getElementById('scenarios');
+  if (!scens.length) {
+    document.getElementById('scenSec').style.display = 'none';
+    return;
+  }
+  const byLine = {};
+  scens.forEach(s => {
+    const k = (s['产品线'] || '未分类').trim();
+    (byLine[k] = byLine[k] || []).push(s);
+  });
+  el.innerHTML = Object.entries(byLine).map(([line, list]) => `
+    <div class="comp-layer">
+      <div class="comp-title"><span class="comp-dot" style="background:var(--grade-a)"></span>${esc(line)}
+        <span class="muted" style="font-weight:400">· ${list.length} 个工序场景</span></div>
+      <div class="comp-list">${list.map(s =>
+        `<span class="chip"><b>${esc(s['工序'] || '')}</b>${
+          s['被加工对象'] ? ' · ' + esc(s['被加工对象']) : ''}${
+          s['痛点'] ? ' · 痛点:' + esc(s['痛点']) : ''}${
+          s['对应优势'] ? ' · 我方优势:' + esc(s['对应优势']) : ''}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+/* ---------- table ---------- */
+const COLS = [
+  { k: '分级', w: 60 }, { k: '匹配分', w: 68 }, { k: '公司名', w: 150 },
+  { k: '行业', w: 110 }, { k: '角色层', w: 76 }, { k: '产品线', w: 130 },
+  { k: '应用场景', w: 160, wrap: true }, { k: '主推型号', w: 120 },
+  { k: '预估用量', w: 100 }, { k: '来源', w: 84 }, { k: '风险等级', w: 80 },
+  { k: '决策链', w: 160, wrap: true }, { k: '下一步动作', w: 170, wrap: true },
+];
+let sortKey = '匹配分', sortAsc = false;
+
+function renderTable() {
+  let rows = (DATA.customers || []).slice();
+  if (activeGrade) rows = rows.filter(r => r['分级'] === activeGrade);
+
+  const dir = sortAsc ? 1 : -1;
+  rows.sort((a, b) => {
+    const ka = (a[sortKey] || ''), kb = (b[sortKey] || '');
+    if (sortKey === '匹配分') return (num(ka) - num(kb)) * dir;
+    if (sortKey === '分级') return String(ka).localeCompare(String(kb)) * -dir;
+    return String(ka).localeCompare(String(kb), 'zh') * dir;
+  });
+
+  document.getElementById('theadRow').innerHTML = COLS.map(c =>
+    `<th class="sortable ${sortKey === c.k ? 'sorted' : ''}" data-k="${c.k}">${c.k}<span class="arrow">${
+      sortKey === c.k ? (sortAsc ? '▲' : '▼') : '▴'}</span></th>`).join('');
+
+  document.getElementById('tbody').innerHTML = rows.length ? rows.map(r => '<tr>' + COLS.map(c => {
+    const v = r[c.k] || '';
+    if (c.k === '分级') return `<td><span class="badge b-${v || 'D'}">${esc(v || '—')}</span></td>`;
+    if (c.k === '匹配分') return `<td><span class="score">${esc(v) || '—'}</span></td>`;
+    if (c.k === '来源') {
+      const cls = String(v).includes('已验证') ? 'b-src' : (String(v).includes('存疑') ? 'b-B' : 'b-D');
+      return `<td><span class="badge ${cls}">${esc(v) || '—'}</span></td>`;
+    }
+    if (c.k === '风险等级') {
+      const cls = v === '高' ? 'b-risk' : (v === '中' ? 'b-risk-m' : 'b-risk-l');
+      return `<td>${v ? `<span class="badge ${cls}">${esc(v)}</span>` : '<span class="muted">—</span>'}</td>`;
+    }
+    if (c.k === '公司名') return `<td class="co-name">${esc(v)}</td>`;
+    return `<td class="${c.wrap ? 'wrap-cell' : ''}">${esc(v) || '<span class="muted">—</span>'}</td>`;
+  }).join('') + '</tr>').join('') : '<tr><td colspan="' + COLS.length + '"><div class="empty">暂无数据</div></td></tr>';
+
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.onclick = () => {
+      const k = th.dataset.k;
+      if (sortKey === k) sortAsc = !sortAsc; else { sortKey = k; sortAsc = true; }
+      renderTable();
+    };
+  });
+}
+
+/* ---------- risks ---------- */
+function renderRisks() {
+  const out = [];
+  (META.risks || []).forEach(t => out.push(`<div class="risk-item high"><strong>数据冲突</strong> · ${esc(t)}</div>`));
+  const rows = DATA.customers || [];
+  const unver = rows.filter(r => (r['来源'] || '') === '推理');
+  if (unver.length) out.push(`<div class="risk-item"><strong>未验证线索 ${unver.length} 家</strong> · 仅由推理得出，需联网核实后才可接触：${unver.map(r => esc(r['公司名'])).join('、')}</div>`);
+  const suspect = rows.filter(r => (r['来源'] || '').includes('存疑'));
+  if (suspect.length) out.push(`<div class="risk-item"><strong>存疑线索 ${suspect.length} 家</strong> · 缺少产线证据：${suspect.map(r => esc(r['公司名'])).join('、')}</div>`);
+  const hi = rows.filter(r => (r['风险等级'] || '') === '高');
+  if (hi.length) out.push(`<div class="risk-item high"><strong>高风险客户 ${hi.length} 家</strong> · 合作前需附加风控条件：${hi.map(r => esc(r['公司名'])).join('、')}</div>`);
+  document.getElementById('risks').innerHTML = out.length ? out.join('') : '<div class="empty">暂无风险提示</div>';
+}
+
+/* ---------- init ---------- */
+renderStats();
+renderBars('industryBars', groupCount(DATA.customers || [], '行业'));
+renderBars('roleBars', groupCount(DATA.customers || [], '角色层'));
+renderBars('productBars', groupCount(DATA.customers || [], '产品线'));
+drawMatrix();
+renderCompetitors();
+renderScenarios();
+renderTable();
+renderRisks();
+</script>
+</body>
+</html>
